@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00bb69c447acd37478115d1a3584c64b, type: 3}
+  m_Name: TestRangeWeaponData
+  m_EditorClassIdentifier: 
+  <Damage>k__BackingField: 10
+  <Range>k__BackingField: 7.5
+  <AttackRate>k__BackingField: 4
+  <AttackDuration>k__BackingField: 3
+  <DamageType>k__BackingField: 0
+  <Projectile>k__BackingField: {fileID: 5190717036536527201, guid: 4bebd12bb409e7a429a4300ff705d981, type: 3}
+  <ShotCount>k__BackingField: 1
+  <Inaccuracy>k__BackingField: 2.5
+  <Speed>k__BackingField: 15

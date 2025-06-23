@@ -238,6 +238,7 @@ GameObject:
   - component: {fileID: 549146767416478301}
   - component: {fileID: 5859511297791800785}
   - component: {fileID: 439922730922336984}
+  - component: {fileID: 6259330371856937380}
   m_Layer: 5
   m_Name: Health_Panel
   m_TagString: Untagged
@@ -303,3 +304,17 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6259330371856937380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8119447900860127142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f83be362b7256884e975ca67a301d16e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: {fileID: 0}
+  _fillBar: {fileID: 7503455402306488892}
