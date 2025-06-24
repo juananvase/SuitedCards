@@ -1,14 +1,19 @@
 using System;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class Health : MonoBehaviour
+public class Health : MonoBehaviour, IDamageable, IHealable
 {
     [SerializeField] private CharacterData _characterData;
     [SerializeField] private float _currentHealth = 100f;
     
     public float HealthPercentage => _currentHealth / _characterData.MaxHealth;
     public bool IsAlive => _currentHealth >= 1;
+    
+    public UnityEvent<HealingInfo> OnHeal;
+    public UnityEvent<DamageInfo> OnDamage;
+    public UnityEvent<DamageInfo> OnDeath;
 
     public void Damage(DamageInfo damageInfo)
     {
@@ -17,16 +22,20 @@ public class Health : MonoBehaviour
         _currentHealth -= damageInfo.Amount;
         _currentHealth = Mathf.Clamp(_currentHealth, 0f, _characterData.MaxHealth);
         
-        //TODO add damage event
+        OnDamage?.Invoke(damageInfo);
+        
         //TODO add damage feedback
-        //TODO handle death
+        if (!IsAlive)
+        {
+            OnDeath?.Invoke(damageInfo);
+        }
     }
 
     private bool MeetDamageConditions(DamageInfo damageInfo)
     {
         if (!IsAlive)
         {
-            Debug.LogError("Trying to deal damage to a death entity");
+            Debug.LogWarning("Trying to deal damage to a death entity");
             return false;
         }
         
@@ -52,7 +61,7 @@ public class Health : MonoBehaviour
         _currentHealth += healingInfo.Amount;
         _currentHealth = Mathf.Clamp(_currentHealth, 0f, _characterData.MaxHealth);
         
-        //TODO add healing event
+        OnHeal?.Invoke(healingInfo);
         //TODO add healing feedback
     }
 
@@ -60,7 +69,7 @@ public class Health : MonoBehaviour
     {
         if (!IsAlive)
         {
-            Debug.LogError("Trying to heal a death entity");
+            Debug.LogWarning("Trying to heal a death entity");
             return false;
         }
         

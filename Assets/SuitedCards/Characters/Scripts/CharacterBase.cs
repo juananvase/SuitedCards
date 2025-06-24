@@ -1,12 +1,18 @@
 using System;
 using UnityEngine;
 
-public abstract class CharacterBase : MonoBehaviour
+[RequireComponent(typeof(Health))]
+public abstract class CharacterBase : MonoBehaviour, ITargetable
 {
     [field: SerializeField] public CharacterData CharacterData { get; private set; }
     [field: SerializeField] public WeaponBase[] Weapons { get; private set; }
+    
+    [field: SerializeField] public int Team { get; set; } = 0;
+    [field: SerializeField] public bool IsTargetable { get; set; } =  true;
+    
+    [Header("Test (Temporal variables)")]
     [SerializeField] private GameObject _target;
-
+    
     private float _lastDashTime;
     private float _lastParryTime;
     
@@ -63,7 +69,7 @@ public abstract class CharacterBase : MonoBehaviour
     private void Attack()
     {
         WeaponBase weapon = Weapons[0];
-        weapon.TryAttack(_target.transform.position, gameObject, 0);
+        weapon.TryAttack(_target.transform.position, gameObject, Team);
     }
 
     private void Update()

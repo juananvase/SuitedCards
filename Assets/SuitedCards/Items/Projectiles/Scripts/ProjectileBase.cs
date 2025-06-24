@@ -48,7 +48,26 @@ public abstract class ProjectileBase : MonoBehaviour
         }
     }
 
-    private void Cleanup()
+    private void OnTriggerEnter(Collider other)
+    {
+        ProjectileBehavior(other);
+
+    }
+    
+    protected virtual void ProjectileBehavior(Collider other)
+    {
+        if (other.TryGetComponent(out ITargetable target) && target.Team == _team) return;
+
+        if (other.TryGetComponent(out IDamageable damageable))
+        {
+            DamageInfo damageInfo = new DamageInfo(_damage, other.gameObject, gameObject, _instigator, _damageType);
+            damageable.Damage(damageInfo);
+        }
+        
+        Cleanup();
+    }
+
+    protected void Cleanup()
     {
         Destroy(gameObject);
     }

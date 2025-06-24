@@ -19,10 +19,7 @@ public abstract class WeaponBase : MonoBehaviour
         return false;
     }
 
-    protected virtual void Attack(Vector3 aimPosition, GameObject instigator, int team)
-    {
-        
-    }
+    protected virtual void Attack(Vector3 aimPosition, GameObject instigator, int team) { }
 
     //TODO add animmation
     //TODO add SFX
