@@ -3,9 +3,12 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Collider))]
-public abstract class ProjectileBase : MonoBehaviour
+public abstract class ProjectileBase : MonoBehaviour, IParryable
 {
     [SerializeField] private Rigidbody _rigidbody;
+    
+    public float ParryEfficiency { get; set; }
+    
     private float _speed;
     private float _range;
     private float _damage;
@@ -58,6 +61,13 @@ public abstract class ProjectileBase : MonoBehaviour
     {
         if (other.TryGetComponent(out ITargetable target) && target.Team == _team) return;
 
+        if (other.TryGetComponent(out IParryUser parryUser) && parryUser.IsParrying)
+        {
+            ParriedAttack(other.gameObject, _instigator);
+            Cleanup();
+            return;
+        }
+
         if (other.TryGetComponent(out IDamageable damageable))
         {
             DamageInfo damageInfo = new DamageInfo(_damage, other.gameObject, gameObject, _instigator, _damageType);
@@ -66,6 +76,18 @@ public abstract class ProjectileBase : MonoBehaviour
         
         Cleanup();
     }
+
+    public void ParriedAttack(GameObject victim, GameObject instigator)
+    {
+        //TODO add OnParrySuccessful event to start quick time event
+        if (victim.TryGetComponent(out IDamageable damageable))
+        {
+            float parriedDamage = _damage - (_damage * ParryEfficiency);
+            DamageInfo damageInfo = new DamageInfo(parriedDamage, victim, gameObject, instigator, _damageType);
+            damageable.Damage(damageInfo);
+        }
+    }
+    
 
     protected void Cleanup()
     {

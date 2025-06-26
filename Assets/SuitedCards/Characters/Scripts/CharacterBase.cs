@@ -1,8 +1,11 @@
 using System;
+using System.Collections;
+using PrimeTween;
+using Unity.VisualScripting;
 using UnityEngine;
 
-[RequireComponent(typeof(Health))]
-public abstract class CharacterBase : MonoBehaviour, ITargetable
+[RequireComponent(typeof(CharacterHealth))]
+public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
 {
     [field: SerializeField] public CharacterData CharacterData { get; private set; }
     [field: SerializeField] public WeaponBase[] Weapons { get; private set; }
@@ -10,73 +13,74 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable
     [field: SerializeField] public int Team { get; set; } = 0;
     [field: SerializeField] public bool IsTargetable { get; set; } =  true;
     
+    [field: SerializeField] public bool IsParrying { get; set; } = false;
+    private Coroutine _parryWindow =  null;
+    
     [Header("Test (Temporal variables)")]
     [SerializeField] private GameObject _target;
     
     private float _lastDashTime;
-    private float _lastParryTime;
+    private Tween _dashTweenAnimation;
     
     [ContextMenu(nameof(FindWeapons))]
     private void FindWeapons()
     {
         Weapons = GetComponentsInChildren<WeaponBase>();
     }
-
-    public bool TryDash(Vector3 dashDirection)
+    
+    [ContextMenu(nameof(TryDash))]
+    protected bool TryDash()
     {
-        if (dashDirection == Vector3.zero)
-        {
-            Debug.LogError("The dash direction must be greater than cero");
-            return false;
-        }
-
         float nextDashTime = _lastDashTime + (1/CharacterData.DashRate);
         
-        if (Time.time > nextDashTime)
+        if (Time.time > nextDashTime && !_dashTweenAnimation.isAlive)
         {
-            Dash(dashDirection);
+            Dash();
+            _lastDashTime =  Time.time;
             return true;
         }
         
         return false;
     }
-
-    private void Dash(Vector3 dashDirection)
+    
+    private void Dash()
     {
+        Vector3 direction = (_target.transform.position - transform.position).normalized;
+        Vector3 dashDistance = new Vector3(CharacterData.DashMultiplier * direction.x, CharacterData.DashYOffset, CharacterData.DashMultiplier * direction.z);
         
-    }
-
-    //TODO implement parry on melee weapons instead (Design desition to make)
-    public bool TryParry()
-    {
-        float nextParryTime = _lastParryTime + (1/CharacterData.ParryRate);
-        
-        if (Time.time > nextParryTime)
-        {
-            Parry();
-            return true;
-        }
-        
-        return false;
-    }
-
-    private void Parry()
-    {
+        _dashTweenAnimation = Tween.Position(transform,startValue: transform.position, endValue: dashDistance, duration: CharacterData.DashDuration, ease: Ease.InCubic, cycles: 2, cycleMode: CycleMode.Rewind);
         
     }
     
     [ContextMenu(nameof(Attack))]
-    private void Attack()
+    protected void Attack()
     {
         WeaponBase weapon = Weapons[0];
         weapon.TryAttack(_target.transform.position, gameObject, Team);
     }
-
-    private void Update()
+    
+    [ContextMenu(nameof(Parry))]
+    protected void Parry()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        WeaponBase weapon = Weapons[0];
+        if (weapon.TryGetComponent(out WeaponMelee weaponMelee))
         {
-            Attack();
+            weaponMelee.TryParry(_target.transform.position, gameObject, Team);
         }
+    }
+
+    public void StartParryWindow(float parryWindow)
+    {
+        if(_parryWindow != null) return;
+        
+        IsParrying = true;
+        _parryWindow = StartCoroutine(ParryWindowRoutine(parryWindow));
+    }
+
+    private IEnumerator ParryWindowRoutine(float parryWindow)
+    {
+        yield return new WaitForSeconds(parryWindow);
+        IsParrying = false;
+        _parryWindow = null;
     }
 }

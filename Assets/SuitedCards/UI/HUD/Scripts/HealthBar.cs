@@ -4,12 +4,12 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField] private Health _health;
+    [SerializeField] private HealthBase healthBase;
     [SerializeField] private Image _fillBar;
 
     private void Update()
     {
-        if (_health.Equals(null)) return;
-        _fillBar.fillAmount = _health.HealthPercentage;
+        if (healthBase.Equals(null)) return;
+        _fillBar.fillAmount = healthBase.HealthPercentage;
     }
 }

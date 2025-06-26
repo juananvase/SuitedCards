@@ -3,12 +3,12 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Health : MonoBehaviour, IDamageable, IHealable
+public class HealthBase : MonoBehaviour, IDamageable, IHealable
 {
-    [SerializeField] private CharacterData _characterData;
+    [SerializeField] private BaseData _data;
     [SerializeField] private float _currentHealth = 100f;
     
-    public float HealthPercentage => _currentHealth / _characterData.MaxHealth;
+    public float HealthPercentage => _currentHealth / _data.MaxHealth;
     public bool IsAlive => _currentHealth >= 1;
     
     public UnityEvent<HealingInfo> OnHeal;
@@ -20,7 +20,7 @@ public class Health : MonoBehaviour, IDamageable, IHealable
         if(!MeetDamageConditions(damageInfo)) return;
 
         _currentHealth -= damageInfo.Amount;
-        _currentHealth = Mathf.Clamp(_currentHealth, 0f, _characterData.MaxHealth);
+        _currentHealth = Mathf.Clamp(_currentHealth, 0f, _data.MaxHealth);
         
         OnDamage?.Invoke(damageInfo);
         
@@ -31,7 +31,7 @@ public class Health : MonoBehaviour, IDamageable, IHealable
         }
     }
 
-    private bool MeetDamageConditions(DamageInfo damageInfo)
+    protected virtual bool MeetDamageConditions(DamageInfo damageInfo)
     {
         if (!IsAlive)
         {
@@ -45,9 +45,9 @@ public class Health : MonoBehaviour, IDamageable, IHealable
             return false;
         }
         
-        if(damageInfo.Amount < 1f)
+        if(damageInfo.Amount < 0f)
         {
-            Debug.LogError("Trying to deal less than 1 damage unit");
+            Debug.LogError("Trying to deal negative damage");
             return false;
         }
         
@@ -59,13 +59,13 @@ public class Health : MonoBehaviour, IDamageable, IHealable
         if(!MeetHealingConditions(healingInfo)) return;
 
         _currentHealth += healingInfo.Amount;
-        _currentHealth = Mathf.Clamp(_currentHealth, 0f, _characterData.MaxHealth);
+        _currentHealth = Mathf.Clamp(_currentHealth, 0f, _data.MaxHealth);
         
         OnHeal?.Invoke(healingInfo);
         //TODO add healing feedback
     }
 
-    private bool MeetHealingConditions(HealingInfo healingInfo)
+    protected virtual bool MeetHealingConditions(HealingInfo healingInfo)
     {
         if (!IsAlive)
         {

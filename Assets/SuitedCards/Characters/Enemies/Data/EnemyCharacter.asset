@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b75226f9fd5a794980c0093e10b9b67, type: 3}
   m_Name: EnemyCharacter
   m_EditorClassIdentifier: 
-  <Character>k__BackingField: {fileID: 0}
-  <Health>k__BackingField: {fileID: 0}
   <MaxHealth>k__BackingField: 100
+  <DashRate>k__BackingField: 0.75
+  <DashMultiplier>k__BackingField: -7
+  <DashYOffset>k__BackingField: 1
+  <DashDuration>k__BackingField: 0.5
+  <ParryRate>k__BackingField: 3
