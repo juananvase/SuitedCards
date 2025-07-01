@@ -86,6 +86,8 @@ GameObject:
   - component: {fileID: 7518148136570078144}
   - component: {fileID: 2036847594759242447}
   - component: {fileID: 4987705486626566291}
+  - component: {fileID: 347631154032586160}
+  - component: {fileID: 8483323303870192728}
   m_Layer: 5
   m_Name: TestCard
   m_TagString: Untagged
@@ -151,3 +153,30 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &347631154032586160
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8722220812915779512}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &8483323303870192728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8722220812915779512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc73be73d637c6044bb84ad613cded8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvas: {fileID: 0}
+  _rectTransform: {fileID: 7518148136570078144}
+  <ItemCardData>k__BackingField: {fileID: 11400000, guid: 182e83eedf68641408eb4e3a0b187a56, type: 2}

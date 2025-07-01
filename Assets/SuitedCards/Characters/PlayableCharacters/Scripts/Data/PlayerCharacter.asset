@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: PlayerCharacter
   m_EditorClassIdentifier: 
   <MaxHealth>k__BackingField: 100
+  <AttackOffset>k__BackingField: 6
+  <AttackDuration>k__BackingField: 0.5
   <DashRate>k__BackingField: 0.75
   <DashMultiplier>k__BackingField: -7
   <DashYOffset>k__BackingField: 1
-  <DashDuration>k__BackingField: 0.5
-  <ParryRate>k__BackingField: 3
+  <DashDuration>k__BackingField: 0.4
+  <OnFindWeapons>k__BackingField: {fileID: 11400000, guid: 3327eedf6d58e774f8f653c15aa11c92, type: 2}

@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b75226f9fd5a794980c0093e10b9b67, type: 3}
-  m_Name: EnemyCharacter
+  m_Script: {fileID: 11500000, guid: 2d37298885a9ab841bc08ef4e8d34004, type: 3}
+  m_Name: ItemCardData
   m_EditorClassIdentifier: 
-  <MaxHealth>k__BackingField: 100
-  <DashRate>k__BackingField: 0.75
-  <DashMultiplier>k__BackingField: -7
-  <DashYOffset>k__BackingField: 1
-  <DashDuration>k__BackingField: 0.5
+  <TargetMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
+  <Item>k__BackingField: {fileID: 5338355368450265918, guid: 219b53aebff99c248b70436ab23eaa42, type: 3}
   <OnFindWeapons>k__BackingField: {fileID: 11400000, guid: 3327eedf6d58e774f8f653c15aa11c92, type: 2}
