@@ -92,6 +92,7 @@ public class WeaponMelee : WeaponBase, IParryable
             
         }
         
+        //TODO change to event
         if (instigator.TryGetComponent(out IParryUser parryUser))
         {
             parryUser.StartParryWindow(WeaponMeleeData.ParryAttackWindow);

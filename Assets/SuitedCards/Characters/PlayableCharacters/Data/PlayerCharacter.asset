@@ -9,14 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b75226f9fd5a794980c0093e10b9b67, type: 3}
+  m_Script: {fileID: 11500000, guid: 33fbfccc630476645b16270d7a9e69e9, type: 3}
   m_Name: PlayerCharacter
   m_EditorClassIdentifier: 
   <MaxHealth>k__BackingField: 100
+  <OnFindWeapons>k__BackingField: {fileID: 11400000, guid: 3327eedf6d58e774f8f653c15aa11c92, type: 2}
   <AttackOffset>k__BackingField: 6
   <AttackDuration>k__BackingField: 0.5
+  <OnStartParryWindow>k__BackingField: {fileID: 0}
   <DashRate>k__BackingField: 0.75
   <DashMultiplier>k__BackingField: -7
   <DashYOffset>k__BackingField: 1
   <DashDuration>k__BackingField: 0.4
-  <OnFindWeapons>k__BackingField: {fileID: 11400000, guid: 3327eedf6d58e774f8f653c15aa11c92, type: 2}
+  <ReactionWindow>k__BackingField: 5

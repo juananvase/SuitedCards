@@ -1,36 +1,37 @@
-using System;
 using System.Collections;
 using PrimeTween;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterHealth))]
 public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
 {
-    [Header("Data")]
+    //Data
     [field: SerializeField] public CharacterData CharacterData { get; private set; }
     [field: SerializeField] public WeaponBase[] Weapons { get; private set; }
     [field: SerializeField] public Transform[] WeaponAnchors { get; private set; }
     
-    [Header("Target System")]
+    //Target System
     [SerializeField] protected GameObject _target;
     [field: SerializeField] public int Team { get; set; } = 0;
     [field: SerializeField] public bool IsTargetable { get; set; } =  true;
     
-    [Header("Parry System")]
+    //Parry System
     [field: SerializeField] public bool IsParrying { get; set; } = false;
     private Coroutine _parryWindow =  null;
     
+    //Dash System
     private float _lastDashTime;
     private Tween _dashTweenAnimation;
+    
+    //Attack System
     private Coroutine _attackRoutine;
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         CharacterData.OnFindWeapons.AddListener(TryFindWeapons);
     }
     
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         CharacterData.OnFindWeapons.RemoveListener(TryFindWeapons);
     }
@@ -51,7 +52,7 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
     {
         float nextDashTime = _lastDashTime + (1/CharacterData.DashRate);
         
-        if (Time.time > nextDashTime && !_dashTweenAnimation.isAlive)
+        if (Time.time > nextDashTime && !_dashTweenAnimation.isAlive && _attackRoutine == null)
         {
             Dash();
             _lastDashTime =  Time.time;
@@ -74,7 +75,7 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
     [ContextMenu(nameof(Attack))]
     protected void Attack()
     {
-        if(Weapons.Length == 0 || _target.Equals(null) || _attackRoutine != null) return;
+        if(Weapons.Length == 0 || _target.Equals(null) || _attackRoutine != null || _dashTweenAnimation.isAlive) return;
         _attackRoutine = StartCoroutine(AttackRoutine());
     }
     
@@ -99,12 +100,12 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
         yield return _attackRoutine = null;
     }
     
-    protected IEnumerator RangeProjectileAttackRoutine(WeaponRangeProjectile weaponRangeProjectile)
+    protected virtual IEnumerator RangeProjectileAttackRoutine(WeaponRangeProjectile weaponRangeProjectile)
     {
         yield return weaponRangeProjectile.TryAttack(_target.transform.position, gameObject, Team);
     }
     
-    protected IEnumerator MeleeAttackRoutine(WeaponMelee weaponMelee)
+    protected virtual IEnumerator MeleeAttackRoutine(WeaponMelee weaponMelee)
     {
         float targetDistance = Vector3.Distance(transform.position, _target.transform.position);
         Vector3 direction = (_target.transform.position - transform.position).normalized;
@@ -123,8 +124,10 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
     [ContextMenu(nameof(Parry))]
     protected void Parry()
     {
-        if(Weapons.Length == 0 || _target.Equals(null)) return;
+        if(Weapons.Length == 0 || _target.Equals(null) || _dashTweenAnimation.isAlive) return;
+        
         WeaponBase weapon = Weapons[0];
+        
         if (weapon.TryGetComponent(out WeaponMelee weaponMelee))
         {
             weaponMelee.TryParry(_target.transform.position, gameObject, Team);

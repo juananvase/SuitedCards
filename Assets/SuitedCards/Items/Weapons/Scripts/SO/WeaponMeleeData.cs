@@ -3,11 +3,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "WeaponMeleeData", menuName = "Scriptable Objects/WeaponData/WeaponMeleeData")]
 public class WeaponMeleeData : WeaponData
 {
-    [Header("Attack")]
+    //Attack
     [field: SerializeField] public float AttackAngle { get; private set; } = 120f;
     [field: SerializeField] public LayerMask AttackHitMask { get; private set; }
     
-    [Header("Parry")]
+    //Parry
+    [field: SerializeField] public GameObjectEventAsset OnStartParryWindow { get; private set; }
     [field: SerializeField] public float ParryRate { get; private set; } = 3f;
     [field: SerializeField] public float ParryAttackWindow { get; private set; } = 0.2f;
     [field: SerializeField] public float ParryEfficiency { get; private set; } = 0.3f;
