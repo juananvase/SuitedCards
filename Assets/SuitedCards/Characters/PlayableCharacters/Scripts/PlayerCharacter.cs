@@ -22,6 +22,9 @@ public class PlayerCharacter : CharacterBase
     
     //Target System
     [SerializeField] private LayerMask _targetMask;
+    
+    //QTE system
+    [SerializeField] private Vector2[] _patternSequence;
 
     protected override void OnEnable()
     {
@@ -48,7 +51,7 @@ public class PlayerCharacter : CharacterBase
         if(_selectAction.WasPressedThisFrame()) SelectTarget();
         if(_dashAction.WasPressedThisFrame()) TryDash();
         if(_parryAction.WasPressedThisFrame()) Parry();
-        if(_qteAction.WasPressedThisFrame()) ReadQTEInputs(_qteAction.ReadValue<Vector2>());
+        if(_qteAction.WasPressedThisFrame()) ReadQTEInputs(_qteAction.ReadValue<Vector2>(), 4);
         
         //Debug Input
         if (Input.GetKeyDown(KeyCode.A)) Attack();
@@ -76,10 +79,12 @@ public class PlayerCharacter : CharacterBase
         yield return Tween.Position(transform, startValue: attackDirection, endValue: startPosition, duration: CharacterData.DashDuration, ease: Ease.InCubic, cycleMode: CycleMode.Rewind).ToYieldInstruction();
     }
     
-    private void ReadQTEInputs(Vector2 value)
+    private void ReadQTEInputs(Vector2 value, int patternNumber)
     {
-        Vector2 randomPattern = new Vector2(Random.Range(-1, 1), Random.Range(-1, 1));
-        Debug.Log(randomPattern);
+        for (int i = 0; i < patternNumber; i++)
+        {
+            _patternSequence[i] = new Vector2(Random.Range(-1, 1), Random.Range(-1, 1));
+        }
     }
 
     private void SelectTarget()
