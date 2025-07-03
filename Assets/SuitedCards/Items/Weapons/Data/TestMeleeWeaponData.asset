@@ -13,16 +13,17 @@ MonoBehaviour:
   m_Name: TestMeleeWeaponData
   m_EditorClassIdentifier: 
   <Damage>k__BackingField: 10
+  <CriticDamagePercentage>k__BackingField: 5
   <Range>k__BackingField: 2
-  <AttackRate>k__BackingField: 1
   <AttackDuration>k__BackingField: 1
   <DamageType>k__BackingField: 0
   <AttackAngle>k__BackingField: 120
   <AttackHitMask>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
+  <OnStartParryWindow>k__BackingField: {fileID: 0}
   <ParryRate>k__BackingField: 3
-  <ParryAttackWindow>k__BackingField: 3
+  <ParryOpportunityWindow>k__BackingField: 0.2
   <ParryEfficiency>k__BackingField: 1
   <ParryHitMask>k__BackingField:
     serializedVersion: 2

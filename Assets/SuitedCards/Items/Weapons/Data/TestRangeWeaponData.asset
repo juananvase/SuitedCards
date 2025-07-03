@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: TestRangeWeaponData
   m_EditorClassIdentifier: 
   <Damage>k__BackingField: 10
+  <CriticDamagePercentage>k__BackingField: 5
   <Range>k__BackingField: 7.5
-  <AttackRate>k__BackingField: 4
   <AttackDuration>k__BackingField: 3
   <DamageType>k__BackingField: 0
   <Projectile>k__BackingField: {fileID: 5190717036536527201, guid: 4bebd12bb409e7a429a4300ff705d981, type: 3}

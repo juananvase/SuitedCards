@@ -9,7 +9,7 @@ public class ItemCardBase : MonoBehaviour, IPointerDownHandler, IBeginDragHandle
     [SerializeField] private Canvas _canvas;
     [SerializeField] private RectTransform _rectTransform;
 
-    private GameObject _target = null;
+    //private GameObject _target = null;
 
     [field: SerializeField] public ItemCardData ItemCardData { get; private set; }
 

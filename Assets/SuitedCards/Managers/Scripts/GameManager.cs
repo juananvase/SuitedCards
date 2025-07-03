@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(TimeManager))]
+[RequireComponent(typeof(QTEManager))]
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance { get; private set; }
@@ -19,9 +20,11 @@ public class GameManager : MonoBehaviour
     }
 
     [field: SerializeField] public TimeManager TimeManager { get; private set; }
+    [field: SerializeField] public QTEManager QTEManager { get; private set; }
 
     private void OnValidate()
     {
+        QTEManager = GetComponent<QTEManager>();
         TimeManager = GetComponent<TimeManager>();
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using PrimeTween;
 using UnityEngine;
 
@@ -23,8 +24,8 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
     private float _lastDashTime;
     private Tween _dashTweenAnimation;
     
-    //Attack System
-    private Coroutine _attackRoutine;
+    //Attack system
+    private bool _isAttacking;
 
     protected virtual void OnEnable()
     {
@@ -52,7 +53,7 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
     {
         float nextDashTime = _lastDashTime + (1/CharacterData.DashRate);
         
-        if (Time.time > nextDashTime && !_dashTweenAnimation.isAlive && _attackRoutine == null)
+        if (Time.time > nextDashTime && !_dashTweenAnimation.isAlive && !_target.Equals(null) && !_isAttacking)
         {
             Dash();
             _lastDashTime =  Time.time;
@@ -64,7 +65,6 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
     
     private void Dash()
     {
-        if(_target.Equals(null)) return;
         Vector3 direction = (_target.transform.position - transform.position).normalized;
         Vector3 dashDistance = new Vector3(CharacterData.DashMultiplier * direction.x, CharacterData.DashYOffset, CharacterData.DashMultiplier * direction.z);
         
@@ -73,52 +73,65 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
     }
     
     [ContextMenu(nameof(Attack))]
-    protected void Attack()
+    protected async void Attack()
     {
-        if(Weapons.Length == 0 || _target.Equals(null) || _attackRoutine != null || _dashTweenAnimation.isAlive) return;
-        _attackRoutine = StartCoroutine(AttackRoutine());
-    }
-    
-    protected IEnumerator AttackRoutine()
-    {
+        if(Weapons.Length == 0 || _target.Equals(null) || _dashTweenAnimation.isAlive) return;
+        
+        _isAttacking = true;
+        
         for (int i = 0; i < Weapons.Length; i++)
         {
-            yield return new WaitForSeconds(0.3f);
+            await Awaitable.WaitForSecondsAsync(0.3f);
             
             switch (Weapons[i])
             {
                 case WeaponMelee:
-                    yield return MeleeAttackRoutine((WeaponMelee)Weapons[i]);
+                    await MeleeAttackRoutine((WeaponMelee)Weapons[i]);
                     continue;
                 
                 case WeaponRangeProjectile:
-                    yield return RangeProjectileAttackRoutine((WeaponRangeProjectile)Weapons[i]);
+                    await RangeProjectileAttackRoutine((WeaponRangeProjectile)Weapons[i]);
                     continue;
             }
         }
 
-        yield return _attackRoutine = null;
+        _isAttacking = false;
     }
     
-    protected virtual IEnumerator RangeProjectileAttackRoutine(WeaponRangeProjectile weaponRangeProjectile)
+    protected virtual async Task RangeProjectileAttackRoutine(WeaponRangeProjectile weaponRangeProjectile)
     {
-        yield return weaponRangeProjectile.TryAttack(_target.transform.position, gameObject, Team);
+        weaponRangeProjectile.Attack(_target.transform.position, gameObject, Team);
+        await Awaitable.NextFrameAsync();
     }
     
-    protected virtual IEnumerator MeleeAttackRoutine(WeaponMelee weaponMelee)
+    protected virtual async Task MeleeAttackRoutine(WeaponMelee weaponMelee)
     {
+        Vector3[] movementPositions = CalculateMovementPositions();
+
+        await Tween.Position(transform, startValue: movementPositions[0], endValue: movementPositions[1], duration: CharacterData.DashDuration, ease: Ease.InCubic);
+        
+        await Tween.Delay(CharacterData.AttackDuration);
+        weaponMelee.Attack(_target.transform.position, gameObject, Team);
+        await Awaitable.NextFrameAsync();
+        
+        await Tween.Position(transform, startValue: movementPositions[1], endValue: movementPositions[0], duration: CharacterData.DashDuration, ease: Ease.InCubic);
+    }
+    
+    protected Vector3[] CalculateMovementPositions()
+    {
+        Vector3[] movementPositions = new Vector3[2];
+        
         float targetDistance = Vector3.Distance(transform.position, _target.transform.position);
         Vector3 direction = (_target.transform.position - transform.position).normalized;
-        
         float attackDistance = targetDistance - CharacterData.AttackOffset;
-        Vector3 attackDirection = new Vector3(attackDistance * direction.x, CharacterData.DashYOffset, attackDistance * direction.z);;
         
+        Vector3 attackDirection = new Vector3(attackDistance * direction.x, CharacterData.DashYOffset, attackDistance * direction.z);;
         Vector3 startPosition = transform.position;
         
-        yield return Tween.Position(transform, startValue: startPosition, endValue: attackDirection, duration: CharacterData.DashDuration, ease: Ease.InCubic, cycleMode: CycleMode.Rewind).ToYieldInstruction();
-        yield return Tween.Delay(CharacterData.AttackDuration).ToYieldInstruction();
-        yield return weaponMelee.TryAttack(_target.transform.position, gameObject, Team);
-        yield return Tween.Position(transform, startValue: attackDirection, endValue: startPosition, duration: CharacterData.DashDuration, ease: Ease.InCubic, cycleMode: CycleMode.Rewind).ToYieldInstruction();
+        movementPositions[0] = startPosition;
+        movementPositions[1] = attackDirection;
+        
+        return movementPositions;
     }
 
     [ContextMenu(nameof(Parry))]
