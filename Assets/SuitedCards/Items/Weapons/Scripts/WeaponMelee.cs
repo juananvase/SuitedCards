@@ -5,11 +5,12 @@ public class WeaponMelee : WeaponBase, IParryable
 {
     public WeaponMeleeData WeaponMeleeData => WeaponData as WeaponMeleeData;
     public float ParryEfficiency { get; set; }
+
     private float _lastParryTime;
     private Collider[] _hits =  new Collider[5];
     
     //TODO fix animations and advance melee combat
-    protected override void Attack(Vector3 aimPosition, GameObject instigator, int team)
+    public override void Attack(Vector3 aimPosition, GameObject instigator, int team)
     {
         base.Attack(aimPosition, instigator, team);
         
@@ -18,9 +19,9 @@ public class WeaponMelee : WeaponBase, IParryable
 
         int hitCount = Physics.OverlapSphereNonAlloc(origin, WeaponMeleeData.Range, _hits, WeaponMeleeData.AttackHitMask);
 
-        for (var i = 0; i < hitCount; i++)
+        for (int i = 0; i < hitCount; i++)
         {
-            var hit = _hits[i];
+            Collider hit = _hits[i];
             
             if (hit.gameObject == instigator) continue;
 
@@ -33,8 +34,8 @@ public class WeaponMelee : WeaponBase, IParryable
             
             if (hit.TryGetComponent(out IParryUser parryUser) && parryUser.IsParrying)
             { 
-                ParriedAttack(hit.gameObject, instigator);
-                continue;
+                ParriedAttack(hit.gameObject, instigator, WeaponMeleeData.Damage);
+                return;
             }
 
             if (hit.TryGetComponent(out IDamageable damageable))
@@ -44,13 +45,52 @@ public class WeaponMelee : WeaponBase, IParryable
             }
         }
     }
+    
+    public override void ChargedAttack(Vector3 aimPosition, GameObject instigator, int team)
+    {
+        base.ChargedAttack(aimPosition, instigator, team);
+        
+        float criticDamage = WeaponMeleeData.Damage + (WeaponMeleeData.Damage * WeaponMeleeData.CriticDamagePercentage);
+        
+        Vector3 origin = instigator.transform.position;
+        Vector3 direction = (aimPosition - origin).normalized;
 
-    public void ParriedAttack(GameObject victim, GameObject instigator)
+        int hitCount = Physics.OverlapSphereNonAlloc(origin, WeaponMeleeData.Range, _hits, WeaponMeleeData.AttackHitMask);
+
+        for (int i = 0; i < hitCount; i++)
+        {
+            Collider hit = _hits[i];
+            
+            if (hit.gameObject == instigator) continue;
+
+            //TODO decide how to manage friendly fire
+            if (hit.TryGetComponent(out ITargetable target) && target.Team == team) continue;
+
+            Vector3 targetDirection = (hit.transform.position - origin).normalized;
+            float angleToHit = Vector3.Angle(direction, targetDirection);
+            if (angleToHit > WeaponMeleeData.AttackAngle) continue;
+            
+            //TODO should charged attack be able to parry?
+            if (hit.TryGetComponent(out IParryUser parryUser) && parryUser.IsParrying)
+            { 
+                ParriedAttack(hit.gameObject, instigator, criticDamage);
+                return;
+            }
+
+            if (hit.TryGetComponent(out IDamageable damageable))
+            {
+                DamageInfo damageInfo = new DamageInfo(criticDamage, hit.gameObject, gameObject, instigator, WeaponMeleeData.DamageType);
+                damageable.Damage(damageInfo);
+            }
+        }
+    }
+
+    public void ParriedAttack(GameObject victim, GameObject instigator, float baseDamage)
     {
         //TODO add OnParrySuccessful event to start quick time event
         if (victim.TryGetComponent(out IDamageable damageable))
         {
-            float parriedDamage = WeaponMeleeData.Damage - (WeaponMeleeData.Damage * ParryEfficiency);
+            float parriedDamage = baseDamage - (baseDamage * ParryEfficiency);
             DamageInfo damageInfo = new DamageInfo(parriedDamage, victim, gameObject, instigator, WeaponMeleeData.DamageType);
             damageable.Damage(damageInfo);
         }
@@ -92,18 +132,12 @@ public class WeaponMelee : WeaponBase, IParryable
             
         }
         
-        //TODO change to event
+        //TODO change to event?
         if (instigator.TryGetComponent(out IParryUser parryUser))
         {
-            parryUser.StartParryWindow(WeaponMeleeData.ParryAttackWindow);
+            parryUser.StartParryWindow(WeaponMeleeData.ParryOpportunityWindow);
         }
         
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, WeaponMeleeData.Range);
     }
     
 }

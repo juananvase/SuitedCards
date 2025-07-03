@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 using PrimeTween;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,9 +24,6 @@ public class PlayerCharacter : CharacterBase
     
     //Target System
     [SerializeField] private LayerMask _targetMask;
-    
-    //QTE system
-    [SerializeField] private Vector2[] _patternSequence = new Vector2[5];
 
     protected override void OnEnable()
     {
@@ -56,40 +55,42 @@ public class PlayerCharacter : CharacterBase
         //Debug Input
         if (Input.GetKeyDown(KeyCode.A)) Attack();
     }
+    
+    protected override async Task RangeProjectileAttackRoutine(WeaponRangeProjectile weaponRangeProjectile)
+    {
+        if (await GameManager.instance.QTEManager.QTESequence(4, PlayerCharacterData.QTEReactionWindow))
+        {
+            weaponRangeProjectile.ChargedAttack(_target.transform.position, gameObject, Team);
+            return;
+        }
+        
+        weaponRangeProjectile.Attack(_target.transform.position, gameObject, Team);
+        await Awaitable.NextFrameAsync();
+    }
+    
+    protected override async Task MeleeAttackRoutine(WeaponMelee weaponMelee)
+    {
+        Vector3[] movementPositions = CalculateMovementPositions();
 
-    protected override IEnumerator RangeProjectileAttackRoutine(WeaponRangeProjectile weaponRangeProjectile)
-    {
-        yield return weaponRangeProjectile.TryAttack(_target.transform.position, gameObject, Team);
+        await Tween.Position(transform, startValue: movementPositions[0], endValue: movementPositions[1], duration: CharacterData.DashDuration, ease: Ease.InCubic);
+        await Tween.Delay(CharacterData.AttackDuration);
+        
+        if (await GameManager.instance.QTEManager.QTESequence(4, PlayerCharacterData.QTEReactionWindow))
+        {
+            weaponMelee.ChargedAttack(_target.transform.position, gameObject, Team);
+            await Awaitable.NextFrameAsync();
+            await Tween.Position(transform, startValue: movementPositions[1], endValue: movementPositions[0], duration: CharacterData.DashDuration, ease: Ease.InCubic, cycleMode: CycleMode.Rewind);
+            return;
+        }
+        
+        weaponMelee.Attack(_target.transform.position, gameObject, Team);
+        await Awaitable.NextFrameAsync();
+        await Tween.Position(transform, startValue: movementPositions[1], endValue: movementPositions[0], duration: CharacterData.DashDuration, ease: Ease.InCubic, cycleMode: CycleMode.Rewind);
     }
-    
-    protected override IEnumerator MeleeAttackRoutine(WeaponMelee weaponMelee)
-    {
-        float targetDistance = Vector3.Distance(transform.position, _target.transform.position);
-        Vector3 direction = (_target.transform.position - transform.position).normalized;
-        
-        float attackDistance = targetDistance - CharacterData.AttackOffset;
-        Vector3 attackDirection = new Vector3(attackDistance * direction.x, CharacterData.DashYOffset, attackDistance * direction.z);;
-        
-        Vector3 startPosition = transform.position;
-        
-        yield return Tween.Position(transform, startValue: startPosition, endValue: attackDirection, duration: CharacterData.DashDuration, ease: Ease.InCubic, cycleMode: CycleMode.Rewind).ToYieldInstruction();
-        yield return Tween.Delay(CharacterData.AttackDuration).ToYieldInstruction();
-        GameManager.instance.TimeManager.DoSlowMotion(PlayerCharacterData.ReactionWindow);
-        yield return weaponMelee.TryAttack(_target.transform.position, gameObject, Team);
-        yield return Tween.Position(transform, startValue: attackDirection, endValue: startPosition, duration: CharacterData.DashDuration, ease: Ease.InCubic, cycleMode: CycleMode.Rewind).ToYieldInstruction();
-    }
-    
+
     private void ReadQTEInputs(Vector2 value)
     {
-        
-    }
-    
-    private void GenerateQTEInputs(int patternNumber)
-    {
-        for (int i = 0; i < patternNumber; i++)
-        {
-            _patternSequence[i] = new Vector2(Random.Range(-1, 1), Random.Range(-1, 1));
-        }
+        GameManager.instance.QTEManager.ReadQTEInputs(value);
     }
 
     private void SelectTarget()

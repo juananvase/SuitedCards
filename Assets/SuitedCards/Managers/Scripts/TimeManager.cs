@@ -1,20 +1,23 @@
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
     [SerializeField] private float _slowDownFactor;
     
-    private Coroutine _slowDownCoroutine = null;
+    private bool _isSlowDown = false;
 
-    public void DoSlowMotion(float slowDownLength)
+    public async Task DoSlowMotion(float slowDownLength)
     {
-        if(_slowDownCoroutine != null) return;
-        //TODO let the character assign the slowDownLength
-        _slowDownCoroutine = StartCoroutine(SlowMotionRoutine(slowDownLength));
+        if(_isSlowDown) return;
+        _isSlowDown = true;
+        await SlowMotionRoutine(slowDownLength);
+        _isSlowDown = false;
+
     }
 
-    private IEnumerator SlowMotionRoutine(float slowDownLength)
+    private async Task SlowMotionRoutine(float slowDownLength)
     {
         Time.fixedDeltaTime = Time.timeScale * 0.02f;
         
@@ -23,11 +26,11 @@ public class TimeManager : MonoBehaviour
         
         while (Time.unscaledTime <= endTime)
         {
-            yield return Time.timeScale = FloatRemap(startTime, endTime, 0f, 1f, Time.unscaledTime);
+            Time.timeScale = FloatRemap(startTime, endTime, 0f, 1f, Time.unscaledTime);
+            await Awaitable.NextFrameAsync();
         }
 
         Time.timeScale = 1f;
-        _slowDownCoroutine = null;
     }
 
     private float FloatRemap(float iMin, float iMax, float oMin, float oMax, float value)

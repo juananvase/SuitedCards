@@ -63,7 +63,7 @@ public abstract class ProjectileBase : MonoBehaviour, IParryable
 
         if (other.TryGetComponent(out IParryUser parryUser) && parryUser.IsParrying)
         {
-            ParriedAttack(other.gameObject, _instigator);
+            ParriedAttack(other.gameObject, _instigator, _damage);
             Cleanup();
             return;
         }
@@ -77,12 +77,12 @@ public abstract class ProjectileBase : MonoBehaviour, IParryable
         Cleanup();
     }
 
-    public void ParriedAttack(GameObject victim, GameObject instigator)
+    public void ParriedAttack(GameObject victim, GameObject instigator, float baseDamage)
     {
         //TODO add OnParrySuccessful event to start quick time event
         if (victim.TryGetComponent(out IDamageable damageable))
         {
-            float parriedDamage = _damage - (_damage * ParryEfficiency);
+            float parriedDamage = baseDamage - (baseDamage * ParryEfficiency);
             DamageInfo damageInfo = new DamageInfo(parriedDamage, victim, gameObject, instigator, _damageType);
             damageable.Damage(damageInfo);
         }

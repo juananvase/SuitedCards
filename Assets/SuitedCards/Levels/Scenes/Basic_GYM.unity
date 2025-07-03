@@ -624,12 +624,9 @@ MonoBehaviour:
   _targetMask:
     serializedVersion: 2
     m_Bits: 64
-  _patternSequence:
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
+  _randomPatternSequence: []
+  _inputPatternSequence: []
+  _inputPosition: 0
 --- !u!114 &258245251
 MonoBehaviour:
   m_ObjectHideFlags: 0
