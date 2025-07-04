@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerLocomotionManager : CharacterLocomotionManager
 {
-    public InputActionAsset InputActions;
+    private InputActionAsset InputActions;
 
     private InputAction a_moveAction;
 
@@ -18,6 +18,13 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
     {
         base.Awake();
         playerCamera = Camera.main;
+    }
+
+    public void Initialize(CharacterController characterController, InputActionAsset input)
+    {
+        this.characterController = characterController;
+        this.InputActions = input;
+        AssignInputActions();
     }
 
     public void AssignInputActions()

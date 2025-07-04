@@ -13,10 +13,8 @@ public class PlayerManager : CharacterManager
         // Initialize PlayerLocomotionManager
         playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
 
-        // Assign the InputActions to the PlayerLocomotionManager
-        playerLocomotionManager.InputActions = InputActions;
-        playerLocomotionManager.AssignInputActions(); // Call the method to assign input actions
-        playerLocomotionManager.characterController = characterController;
+        // Initiialize PlayerLocomotionManager with CharacterController and InputActions
+        playerLocomotionManager.Initialize(characterController, InputActions);
     }
     protected override void OnEnable()
     {
