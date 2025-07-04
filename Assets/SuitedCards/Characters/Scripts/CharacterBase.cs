@@ -30,13 +30,13 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
     protected virtual void OnEnable()
     {
         CharacterData.OnFindWeapons.AddListener(TryFindWeapons);
-        CharacterData.OnParrySuccessful.AddListener(CounterAttack);
+        CharacterData.OnParrySuccessful.AddListener(TryCounterAttack);
     }
     
     protected virtual void OnDisable()
     {
         CharacterData.OnFindWeapons.RemoveListener(TryFindWeapons);
-        CharacterData.OnParrySuccessful.RemoveListener(CounterAttack);
+        CharacterData.OnParrySuccessful.RemoveListener(TryCounterAttack);
     }
 
     private void TryFindWeapons(GameObject character)
@@ -134,7 +134,7 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
         return movementPositions;
     }
 
-    private void CounterAttack(GameObject value)
+    private void TryCounterAttack(GameObject value)
     {
         if(value != gameObject) return;
         CounterAttackTask();
@@ -142,7 +142,25 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
 
     protected virtual async Task CounterAttackTask()
     {
-        Attack();
+        WeaponMelee weaponParrier = null;
+        for (int i = 0; i < Weapons.Length; i++)
+        {
+            if (Weapons[i].TryGetComponent(out WeaponMelee weaponMelee))
+            {
+                weaponParrier = weaponMelee;
+                break;
+            }
+        }
+        
+        Vector3[] movementPositions = CalculateMovementPositions();
+
+        await Tween.Position(transform, startValue: movementPositions[0], endValue: movementPositions[1], duration: CharacterData.DashDuration, ease: Ease.InCubic);
+        
+        await Tween.Delay(CharacterData.AttackDuration);
+        weaponParrier.CounterAttack(_target.transform.position, gameObject, Team);
+        await Awaitable.NextFrameAsync();
+        
+        await Tween.Position(transform, startValue: movementPositions[1], endValue: movementPositions[0], duration: CharacterData.DashDuration, ease: Ease.InCubic);
     }
 
     protected void Parry()
