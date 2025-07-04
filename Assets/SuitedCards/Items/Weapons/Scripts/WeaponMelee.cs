@@ -87,10 +87,10 @@ public class WeaponMelee : WeaponBase, IParryable
 
     public void ParriedAttack(GameObject victim, GameObject instigator, float baseDamage)
     {
-        //TODO add OnParrySuccessful event to start quick time event
+        float parriedDamage = baseDamage - (baseDamage * ParryEfficiency);
+        WeaponMeleeData.OnParrySuccessful?.Invoke(victim);
         if (victim.TryGetComponent(out IDamageable damageable))
         {
-            float parriedDamage = baseDamage - (baseDamage * ParryEfficiency);
             DamageInfo damageInfo = new DamageInfo(parriedDamage, victim, gameObject, instigator, WeaponMeleeData.DamageType);
             damageable.Damage(damageInfo);
         }

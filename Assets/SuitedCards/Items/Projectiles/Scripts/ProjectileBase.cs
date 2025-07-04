@@ -14,6 +14,7 @@ public abstract class ProjectileBase : MonoBehaviour, IParryable
     private float _damage;
     private DamageType _damageType;
     private GameObject _instigator;
+    private GameObjectEventAsset _onParrySuccessful;
     private int _team;
     private Vector3 _spawnPosition;
 
@@ -28,13 +29,14 @@ public abstract class ProjectileBase : MonoBehaviour, IParryable
         collider.isTrigger = true;
     }
 
-    public void Launch(float speed, float range, float damage, DamageType damageType, GameObject instigator, int team)
+    public void Launch(float speed, float range, float damage, DamageType damageType, GameObject instigator, GameObjectEventAsset onParrySuccessful, int team)
     {
         _speed = speed;
         _range = range;
         _damage = damage;
         _damageType = damageType;
         _instigator = instigator;
+        _onParrySuccessful = onParrySuccessful;
         _team = team;
         
         _rigidbody.linearVelocity = transform.forward * _speed;
@@ -79,7 +81,8 @@ public abstract class ProjectileBase : MonoBehaviour, IParryable
 
     public void ParriedAttack(GameObject victim, GameObject instigator, float baseDamage)
     {
-        //TODO add OnParrySuccessful event to start quick time event
+        _onParrySuccessful.Invoke(victim);
+        
         if (victim.TryGetComponent(out IDamageable damageable))
         {
             float parriedDamage = baseDamage - (baseDamage * ParryEfficiency);

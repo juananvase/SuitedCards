@@ -92,6 +92,15 @@ public class PlayerCharacter : CharacterBase
     {
         GameManager.instance.QTEManager.ReadQTEInputs(value);
     }
+    
+    protected override async Task CounterAttackTask()
+    {
+        if (await GameManager.instance.QTEManager.QTESequence(3, PlayerCharacterData.QTEReactionWindow))
+        {
+            Attack();
+            return;
+        }
+    }
 
     private void SelectTarget()
     {

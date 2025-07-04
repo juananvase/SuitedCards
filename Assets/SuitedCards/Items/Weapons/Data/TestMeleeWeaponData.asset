@@ -21,7 +21,7 @@ MonoBehaviour:
   <AttackHitMask>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
-  <OnStartParryWindow>k__BackingField: {fileID: 0}
+  <OnParrySuccessful>k__BackingField: {fileID: 11400000, guid: e7384e4d045554440bf6217aff91dd0a, type: 2}
   <ParryRate>k__BackingField: 3
   <ParryOpportunityWindow>k__BackingField: 0.2
   <ParryEfficiency>k__BackingField: 1

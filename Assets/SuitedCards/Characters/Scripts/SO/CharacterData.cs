@@ -9,7 +9,7 @@ public class CharacterData : BaseData
     [field: SerializeField] public float AttackDuration { get; private set; } = 0.5f;
     
     //Parry
-    [field: SerializeField] public GameObjectEventAsset OnStartParryWindow { get; private set; }
+    [field: SerializeField] public GameObjectEventAsset OnParrySuccessful { get; private set; }
 
     //Dash
     [field: SerializeField] public float DashRate { get; private set; } = 3f;

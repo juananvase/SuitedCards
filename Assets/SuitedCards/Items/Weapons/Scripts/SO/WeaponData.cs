@@ -9,5 +9,5 @@ public class WeaponData : ScriptableObject
     
     [field: SerializeField] public float AttackDuration { get; private set; } = 3f;
     [field: SerializeField] public DamageType DamageType { get; private set; } = DamageType.None;
-    
+    [field: SerializeField] public GameObjectEventAsset OnParrySuccessful { get; private set; }
 }

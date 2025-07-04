@@ -17,6 +17,7 @@ MonoBehaviour:
   <Range>k__BackingField: 7.5
   <AttackDuration>k__BackingField: 3
   <DamageType>k__BackingField: 0
+  <OnParrySuccessful>k__BackingField: {fileID: 11400000, guid: e7384e4d045554440bf6217aff91dd0a, type: 2}
   <Projectile>k__BackingField: {fileID: 5190717036536527201, guid: 4bebd12bb409e7a429a4300ff705d981, type: 3}
   <ShotCount>k__BackingField: 1
   <Inaccuracy>k__BackingField: 2.5

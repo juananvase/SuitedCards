@@ -14,7 +14,7 @@ public class EnemyCharacter : CharacterBase
         while (true)
         {
             yield return new WaitForSeconds(3f);
-            //Attack();
+            Attack();
         }
     }
 }

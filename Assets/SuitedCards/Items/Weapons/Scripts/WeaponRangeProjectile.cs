@@ -25,7 +25,7 @@ public class WeaponRangeProjectile : WeaponBase
             Quaternion finalRotation = spawnRotation * inaccuracyRotation;
 
             ProjectileBase spawnedProjectile = Instantiate(WeaponRangedData.Projectile, spawnPosition, finalRotation);
-            spawnedProjectile.Launch(WeaponRangedData.Speed, WeaponRangedData.Range, WeaponRangedData.Damage, WeaponRangedData.DamageType, instigator, team);
+            spawnedProjectile.Launch(WeaponRangedData.Speed, WeaponRangedData.Range, WeaponRangedData.Damage, WeaponRangedData.DamageType, instigator, WeaponRangedData.OnParrySuccessful, team);
         }
     }
 
@@ -51,7 +51,7 @@ public class WeaponRangeProjectile : WeaponBase
             Quaternion finalRotation = spawnRotation * inaccuracyRotation;
 
             ProjectileBase spawnedProjectile = Instantiate(WeaponRangedData.Projectile, spawnPosition, finalRotation);
-            spawnedProjectile.Launch(WeaponRangedData.Speed, WeaponRangedData.Range, criticDamage, WeaponRangedData.DamageType, instigator, team);
+            spawnedProjectile.Launch(WeaponRangedData.Speed, WeaponRangedData.Range, criticDamage, WeaponRangedData.DamageType, instigator, WeaponRangedData.OnParrySuccessful,team);
         }
         
     }

@@ -30,11 +30,13 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
     protected virtual void OnEnable()
     {
         CharacterData.OnFindWeapons.AddListener(TryFindWeapons);
+        CharacterData.OnParrySuccessful.AddListener(CounterAttack);
     }
     
     protected virtual void OnDisable()
     {
         CharacterData.OnFindWeapons.RemoveListener(TryFindWeapons);
+        CharacterData.OnParrySuccessful.RemoveListener(CounterAttack);
     }
 
     private void TryFindWeapons(GameObject character)
@@ -48,7 +50,6 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
         Weapons = GetComponentsInChildren<WeaponBase>();
     }
     
-    [ContextMenu(nameof(TryDash))]
     protected bool TryDash()
     {
         float nextDashTime = _lastDashTime + (1/CharacterData.DashRate);
@@ -72,7 +73,6 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
         
     }
     
-    [ContextMenu(nameof(Attack))]
     protected async void Attack()
     {
         if(Weapons.Length == 0 || _target.Equals(null) || _dashTweenAnimation.isAlive) return;
@@ -134,7 +134,17 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
         return movementPositions;
     }
 
-    [ContextMenu(nameof(Parry))]
+    private void CounterAttack(GameObject value)
+    {
+        if(value != gameObject) return;
+        CounterAttackTask();
+    }
+
+    protected virtual async Task CounterAttackTask()
+    {
+        Attack();
+    }
+
     protected void Parry()
     {
         if(Weapons.Length == 0 || _target.Equals(null) || _dashTweenAnimation.isAlive) return;

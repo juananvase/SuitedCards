@@ -8,7 +8,6 @@ public class WeaponMeleeData : WeaponData
     [field: SerializeField] public LayerMask AttackHitMask { get; private set; }
     
     //Parry
-    [field: SerializeField] public GameObjectEventAsset OnStartParryWindow { get; private set; }
     [field: SerializeField] public float ParryRate { get; private set; } = 3f;
     [field: SerializeField] public float ParryOpportunityWindow { get; private set; } = 0.2f;
     [field: SerializeField] public float ParryEfficiency { get; private set; } = 0.3f;

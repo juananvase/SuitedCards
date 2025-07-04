@@ -16,9 +16,9 @@ MonoBehaviour:
   <OnFindWeapons>k__BackingField: {fileID: 11400000, guid: 3327eedf6d58e774f8f653c15aa11c92, type: 2}
   <AttackOffset>k__BackingField: 6
   <AttackDuration>k__BackingField: 0.5
-  <OnStartParryWindow>k__BackingField: {fileID: 0}
+  <OnParrySuccessful>k__BackingField: {fileID: 11400000, guid: e7384e4d045554440bf6217aff91dd0a, type: 2}
   <DashRate>k__BackingField: 0.75
   <DashMultiplier>k__BackingField: -7
   <DashYOffset>k__BackingField: 1
   <DashDuration>k__BackingField: 0.4
-  <ReactionWindow>k__BackingField: 5
+  <QTEReactionWindow>k__BackingField: 5
