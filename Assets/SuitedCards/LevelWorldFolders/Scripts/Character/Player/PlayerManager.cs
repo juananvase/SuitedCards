@@ -5,6 +5,7 @@ public class PlayerManager : CharacterManager
 {
     public InputActionAsset InputActions;
     private PlayerLocomotionManager playerLocomotionManager;
+    private PlayerActionManager playerActionManager;
 
     protected override void Awake()
         {
@@ -12,9 +13,11 @@ public class PlayerManager : CharacterManager
 
         // Initialize PlayerLocomotionManager
         playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
+        playerActionManager = GetComponent<PlayerActionManager>();
 
         // Initiialize PlayerLocomotionManager with CharacterController and InputActions
         playerLocomotionManager.Initialize(characterController, InputActions);
+        playerActionManager.Initialize(InputActions);
     }
     protected override void OnEnable()
     {
