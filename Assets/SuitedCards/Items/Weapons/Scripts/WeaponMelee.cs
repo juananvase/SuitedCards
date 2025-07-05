@@ -8,11 +8,11 @@ public class WeaponMelee : WeaponBase, IParryable
 
     private float _lastParryTime;
     private Collider[] _hits =  new Collider[5];
-    
+
     //TODO fix animations and advance melee combat
-    public override void Attack(Vector3 aimPosition, GameObject instigator, int team)
+    protected override void HandleAttack(Vector3 aimPosition, GameObject instigator, int team, float damage, bool isParryable)
     {
-        base.Attack(aimPosition, instigator, team);
+        base.HandleAttack(aimPosition, instigator, team, damage, isParryable);
         
         Vector3 origin = instigator.transform.position;
         Vector3 direction = (aimPosition - origin).normalized;
@@ -32,7 +32,7 @@ public class WeaponMelee : WeaponBase, IParryable
             float angleToHit = Vector3.Angle(direction, targetDirection);
             if (angleToHit > WeaponMeleeData.AttackAngle) continue;
             
-            if (hit.TryGetComponent(out IParryUser parryUser) && parryUser.IsParrying)
+            if (isParryable && hit.TryGetComponent(out IParryUser parryUser) && parryUser.IsParrying)
             { 
                 ParriedAttack(hit.gameObject, instigator, WeaponMeleeData.Damage);
                 return;
@@ -40,49 +40,17 @@ public class WeaponMelee : WeaponBase, IParryable
 
             if (hit.TryGetComponent(out IDamageable damageable))
             {
-                DamageInfo damageInfo = new DamageInfo(WeaponMeleeData.Damage, hit.gameObject, gameObject, instigator, WeaponMeleeData.DamageType);
+                DamageInfo damageInfo = new DamageInfo(damage, hit.gameObject, gameObject, instigator, WeaponMeleeData.DamageType);
                 damageable.Damage(damageInfo);
             }
         }
+        
     }
-    
-    public override void ChargedAttack(Vector3 aimPosition, GameObject instigator, int team)
+
+    public virtual void CounterAttack(Vector3 aimPosition, GameObject instigator, int team)
     {
-        base.ChargedAttack(aimPosition, instigator, team);
-        
-        float criticDamage = WeaponMeleeData.Damage + (WeaponMeleeData.Damage * WeaponMeleeData.CriticDamagePercentage);
-        
-        Vector3 origin = instigator.transform.position;
-        Vector3 direction = (aimPosition - origin).normalized;
-
-        int hitCount = Physics.OverlapSphereNonAlloc(origin, WeaponMeleeData.Range, _hits, WeaponMeleeData.AttackHitMask);
-
-        for (int i = 0; i < hitCount; i++)
-        {
-            Collider hit = _hits[i];
-            
-            if (hit.gameObject == instigator) continue;
-
-            //TODO decide how to manage friendly fire
-            if (hit.TryGetComponent(out ITargetable target) && target.Team == team) continue;
-
-            Vector3 targetDirection = (hit.transform.position - origin).normalized;
-            float angleToHit = Vector3.Angle(direction, targetDirection);
-            if (angleToHit > WeaponMeleeData.AttackAngle) continue;
-            
-            //TODO should charged attack be able to parry?
-            if (hit.TryGetComponent(out IParryUser parryUser) && parryUser.IsParrying)
-            { 
-                ParriedAttack(hit.gameObject, instigator, criticDamage);
-                return;
-            }
-
-            if (hit.TryGetComponent(out IDamageable damageable))
-            {
-                DamageInfo damageInfo = new DamageInfo(criticDamage, hit.gameObject, gameObject, instigator, WeaponMeleeData.DamageType);
-                damageable.Damage(damageInfo);
-            }
-        }
+        float counterDamage = WeaponData.Damage * WeaponMeleeData.ParryEfficiency;
+        HandleAttack(aimPosition, instigator, team, counterDamage, false);
     }
 
     public void ParriedAttack(GameObject victim, GameObject instigator, float baseDamage)

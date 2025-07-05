@@ -95,11 +95,27 @@ public class PlayerCharacter : CharacterBase
     
     protected override async Task CounterAttackTask()
     {
-        if (await GameManager.instance.QTEManager.QTESequence(3, PlayerCharacterData.QTEReactionWindow))
+        if (!await GameManager.instance.QTEManager.QTESequence(3, PlayerCharacterData.QTEReactionWindow)) return;
+        
+        WeaponMelee weaponParrier = null;
+        for (int i = 0; i < Weapons.Length; i++)
         {
-            Attack();
-            return;
+            if (Weapons[i].TryGetComponent(out WeaponMelee weaponMelee))
+            {
+                weaponParrier = weaponMelee;
+                break;
+            }
         }
+        
+        Vector3[] movementPositions = CalculateMovementPositions();
+
+        await Tween.Position(transform, startValue: movementPositions[0], endValue: movementPositions[1], duration: CharacterData.DashDuration, ease: Ease.InCubic);
+        
+        await Tween.Delay(CharacterData.AttackDuration);
+        weaponParrier.CounterAttack(_target.transform.position, gameObject, Team);
+        await Awaitable.NextFrameAsync();
+        
+        await Tween.Position(transform, startValue: movementPositions[1], endValue: movementPositions[0], duration: CharacterData.DashDuration, ease: Ease.InCubic);
     }
 
     private void SelectTarget()
