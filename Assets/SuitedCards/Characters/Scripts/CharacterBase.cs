@@ -75,7 +75,7 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
     
     protected async void Attack()
     {
-        if(Weapons.Length == 0 || _target.Equals(null) || _dashTweenAnimation.isAlive) return;
+        if(Weapons.Length == 0 || _target.Equals(null) || _dashTweenAnimation.isAlive || _isAttacking) return;
         
         _isAttacking = true;
         

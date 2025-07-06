@@ -705,7 +705,7 @@ GameObject:
   m_Component:
   - component: {fileID: 598085355}
   - component: {fileID: 598085357}
-  - component: {fileID: 598085356}
+  - component: {fileID: 598085358}
   m_Layer: 6
   m_Name: Panel
   m_TagString: Untagged
@@ -736,36 +736,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &598085356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 598085354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.1509434, g: 0.13599145, b: 0.13599145, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &598085357
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -774,6 +744,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 598085354}
   m_CullTransparentMesh: 1
+--- !u!114 &598085358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598085354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 629e8fb1816075a4a9ec4698a5348c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputSlots:
+  - {fileID: 1349286325}
+  - {fileID: 923794438}
+  - {fileID: 1810946033}
+  - {fileID: 966349826}
+  _possibleInputs:
+  - {fileID: 21300000, guid: b727a95f07ded4a46ad706ff51a79853, type: 3}
+  - {fileID: 21300000, guid: c31e69b68f623d4438abc7583eb3d122, type: 3}
+  - {fileID: 21300000, guid: 136c7c97c6b49874eb0200d8ef46dff9, type: 3}
+  - {fileID: 21300000, guid: bcc3be71fddb4114e8286ac2761b3bfd, type: 3}
 --- !u!4 &825068977 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4081524038962721597, guid: 219b53aebff99c248b70436ab23eaa42, type: 3}
@@ -858,7 +850,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 136c7c97c6b49874eb0200d8ef46dff9, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1070,7 +1062,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c31e69b68f623d4438abc7583eb3d122, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1223,8 +1215,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a24dd6507c2f6e44282550d590c77d46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _randomPatternSequence: []
-  _inputPatternSequence: []
+  <RandomPatternSequence>k__BackingField: []
+  <InputPatternSequence>k__BackingField: []
 --- !u!1 &1308945118
 GameObject:
   m_ObjectHideFlags: 0
@@ -1384,7 +1376,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b727a95f07ded4a46ad706ff51a79853, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1802,7 +1794,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bcc3be71fddb4114e8286ac2761b3bfd, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
