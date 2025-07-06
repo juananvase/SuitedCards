@@ -250,6 +250,7 @@ GameObject:
   - component: {fileID: 360912089}
   - component: {fileID: 360912088}
   - component: {fileID: 360912087}
+  - component: {fileID: 360912090}
   m_Layer: 0
   m_Name: Blood_Splash
   m_TagString: Untagged
@@ -353,6 +354,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &360912090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360912086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d18f999f83d84ec459eb0b2fa97b0cb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <BloodVFXGraph>k__BackingField: {fileID: 360912088}
+  _toggleSpawnContinuously: 1
+  _loopDuration: 0.1
+  _forceDirection: {x: 0, y: -9.081, z: 0}
+  _particleCount: 50
+  _lifetime: {x: 0.5, y: 1}
 --- !u!1 &961739749
 GameObject:
   m_ObjectHideFlags: 0
