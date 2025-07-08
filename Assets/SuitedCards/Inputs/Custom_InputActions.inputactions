@@ -762,6 +762,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "WorldCombatTest",
+            "id": "6200d435-1db1-4042-be97-c5eb5d616657",
+            "actions": [
+                {
+                    "name": "EndCombat",
+                    "type": "Button",
+                    "id": "5355eb6a-24d6-42e9-b1be-c1476251b9d5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "174e3707-4e48-4f05-87a4-e2e09e69a73a",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EndCombat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

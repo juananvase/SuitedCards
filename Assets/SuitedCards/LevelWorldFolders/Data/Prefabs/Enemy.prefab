@@ -160,6 +160,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnAttackPerformed:
     m_PersistentCalls:
+      m_Calls: []
+  OnEnemyDefeated:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4496435380058530600}
         m_TargetAssemblyTypeName: Node, Assembly-CSharp
