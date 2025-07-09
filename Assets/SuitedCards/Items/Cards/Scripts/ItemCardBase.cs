@@ -50,7 +50,7 @@ public class ItemCardBase : MonoBehaviour, IPointerDownHandler, IBeginDragHandle
     private void AssignItem()
     {
         //TODO keep this function empty -> WeaponCard, ArmorCard, EffectCard
-        if (SelectTarget().TryGetComponent(out CharacterBase character))
+        if (SelectTarget().TryGetComponent(out PlayerCharacter character))
         {
             if (character.WeaponAnchors.Length == 0)
             {

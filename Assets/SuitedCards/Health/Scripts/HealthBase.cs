@@ -5,20 +5,20 @@ using UnityEngine.Events;
 
 public class HealthBase : MonoBehaviour, IDamageable, IHealable
 {
-    [SerializeField] private BaseData _data;
-    [SerializeField] private float _currentHealth = 100f;
+    [SerializeField] protected BaseData _data;
+    [SerializeField] protected float _currentHealth = 100f;
     
     public float HealthPercentage => _currentHealth / _data.MaxHealth;
     public bool IsAlive => _currentHealth >= 1;
-    
+
     public UnityEvent<HealingInfo> OnHeal;
     public UnityEvent<DamageInfo> OnDamage;
     public UnityEvent<DamageInfo> OnDeath;
 
-    public void Damage(DamageInfo damageInfo)
+    public virtual void Damage(DamageInfo damageInfo)
     {
-        if(!MeetDamageConditions(damageInfo)) return;
-
+        if (!MeetDamageConditions(damageInfo)) return;
+        
         _currentHealth -= damageInfo.Amount;
         _currentHealth = Mathf.Clamp(_currentHealth, 0f, _data.MaxHealth);
         
@@ -31,7 +31,7 @@ public class HealthBase : MonoBehaviour, IDamageable, IHealable
         }
     }
 
-    protected virtual bool MeetDamageConditions(DamageInfo damageInfo)
+    protected bool MeetDamageConditions(DamageInfo damageInfo)
     {
         if (!IsAlive)
         {
@@ -65,7 +65,7 @@ public class HealthBase : MonoBehaviour, IDamageable, IHealable
         //TODO add healing feedback
     }
 
-    protected virtual bool MeetHealingConditions(HealingInfo healingInfo)
+    private bool MeetHealingConditions(HealingInfo healingInfo)
     {
         if (!IsAlive)
         {

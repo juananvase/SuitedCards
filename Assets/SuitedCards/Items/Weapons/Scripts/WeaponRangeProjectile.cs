@@ -5,9 +5,9 @@ public class WeaponRangeProjectile : WeaponBase
     public WeaponRangedData WeaponRangedData => WeaponData as WeaponRangedData;
     [SerializeField] private Transform _muzzle;
 
-    protected override void HandleAttack(Vector3 aimPosition, GameObject instigator, int team, float damage, bool isParryable)
+    protected override void HandleAttack(Vector3 aimPosition, GameObject instigator, int team, float weaponDamage, bool isParryable)
     {
-        base.HandleAttack(aimPosition, instigator, team, damage, isParryable);
+        base.HandleAttack(aimPosition, instigator, team, weaponDamage, isParryable);
         
         Vector3 spawnPosition = _muzzle.position;
         Vector3 aimDirection = (aimPosition - spawnPosition).normalized;
@@ -25,7 +25,7 @@ public class WeaponRangeProjectile : WeaponBase
             Quaternion finalRotation = spawnRotation * inaccuracyRotation;
 
             ProjectileBase spawnedProjectile = Instantiate(WeaponRangedData.Projectile, spawnPosition, finalRotation);
-            spawnedProjectile.Launch(WeaponRangedData.Speed, WeaponRangedData.Range, damage, WeaponRangedData.DamageType, instigator, isParryable, WeaponRangedData.OnParrySuccessful, team);
+            spawnedProjectile.Launch(WeaponRangedData.Speed, WeaponRangedData.Range, weaponDamage, WeaponRangedData.DamageType, instigator, isParryable, WeaponRangedData.OnParrySuccessful, team);
         }
     }
     

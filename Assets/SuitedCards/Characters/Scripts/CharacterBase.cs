@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Threading.Tasks;
 using PrimeTween;
@@ -10,6 +11,9 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
     [field: SerializeField] public CharacterData CharacterData { get; private set; }
     [field: SerializeField] public WeaponBase[] Weapons { get; private set; }
     [field: SerializeField] public Transform[] WeaponAnchors { get; private set; }
+    
+    [field: SerializeField] public EquipmentBase[] Equipments { get; private set; }
+    [field: SerializeField] public Transform[] EquipmentsAnchors { get; private set; }
     
     //Target System
     [SerializeField] protected GameObject _target;
@@ -39,6 +43,11 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
         CharacterData.OnParrySuccessful.RemoveListener(TryCounterAttack);
     }
 
+    private void Start()
+    {
+        UseEquipment();
+    }
+
     private void TryFindWeapons(GameObject character)
     {
         if(character == gameObject) FindWeapons();
@@ -50,32 +59,9 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
         Weapons = GetComponentsInChildren<WeaponBase>();
     }
     
-    protected bool TryDash()
-    {
-        float nextDashTime = _lastDashTime + (1/CharacterData.DashRate);
-        
-        if (Time.time > nextDashTime && !_dashTweenAnimation.isAlive && !_target.Equals(null) && !_isAttacking)
-        {
-            Dash();
-            _lastDashTime =  Time.time;
-            return true;
-        }
-        
-        return false;
-    }
-    
-    private void Dash()
-    {
-        Vector3 direction = (_target.transform.position - transform.position).normalized;
-        Vector3 dashDistance = new Vector3(CharacterData.DashMultiplier * direction.x, CharacterData.DashYOffset, CharacterData.DashMultiplier * direction.z);
-        
-        _dashTweenAnimation = Tween.Position(transform,startValue: transform.position, endValue: dashDistance, duration: CharacterData.DashDuration, ease: Ease.InCubic, cycles: 2, cycleMode: CycleMode.Rewind);
-        
-    }
-    
     protected async void Attack()
     {
-        if(Weapons.Length == 0 || _target.Equals(null) || _dashTweenAnimation.isAlive) return;
+        if(Weapons.Length == 0 || _target.Equals(null) || _dashTweenAnimation.isAlive || _isAttacking) return;
         
         _isAttacking = true;
         
@@ -125,7 +111,7 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
         Vector3 direction = (_target.transform.position - transform.position).normalized;
         float attackDistance = targetDistance - CharacterData.AttackOffset;
         
-        Vector3 attackDirection = new Vector3(attackDistance * direction.x, CharacterData.DashYOffset, attackDistance * direction.z);;
+        Vector3 attackDirection = new Vector3(attackDistance * direction.x, CharacterData.DashYOffset, attackDistance * direction.z);
         Vector3 startPosition = transform.position;
         
         movementPositions[0] = startPosition;
@@ -140,7 +126,7 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
         CounterAttackTask();
     }
 
-    protected virtual async Task CounterAttackTask()
+    protected virtual async void CounterAttackTask()
     {
         WeaponMelee weaponParrier = null;
         for (int i = 0; i < Weapons.Length; i++)
@@ -162,7 +148,31 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
         
         await Tween.Position(transform, startValue: movementPositions[1], endValue: movementPositions[0], duration: CharacterData.DashDuration, ease: Ease.InCubic);
     }
+    
+    
+    private void TryFindEquipments(GameObject character)
+    {
+        if(character == gameObject) FindEquipments();
+    }
+    
+    [ContextMenu(nameof(FindEquipments))]
+    private void FindEquipments()
+    {
+        Equipments = GetComponentsInChildren<EquipmentBase>();
+    }
 
+    private void UseEquipment()
+    {
+        if(Equipments.Length == 0) return;
+
+        for (int i = 0; i < Equipments.Length; i++)
+        {
+            Equipments[i].Equip(gameObject);
+        }
+
+    }
+
+    
     protected void Parry()
     {
         if(Weapons.Length == 0 || _target.Equals(null) || _dashTweenAnimation.isAlive) return;
@@ -188,5 +198,29 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
         yield return new WaitForSeconds(parryWindow);
         IsParrying = false;
         _parryWindow = null;
+    }
+    
+    
+    protected bool TryDash()
+    {
+        float nextDashTime = _lastDashTime + (1/CharacterData.DashRate);
+        
+        if (Time.time > nextDashTime && !_dashTweenAnimation.isAlive && !_target.Equals(null) && !_isAttacking)
+        {
+            Dash();
+            _lastDashTime =  Time.time;
+            return true;
+        }
+        
+        return false;
+    }
+    
+    private void Dash()
+    {
+        Vector3 direction = (_target.transform.position - transform.position).normalized;
+        Vector3 dashDistance = new Vector3(CharacterData.DashMultiplier * direction.x, CharacterData.DashYOffset, CharacterData.DashMultiplier * direction.z);
+        
+        _dashTweenAnimation = Tween.Position(transform,startValue: transform.position, endValue: dashDistance, duration: CharacterData.DashDuration, ease: Ease.InCubic, cycles: 2, cycleMode: CycleMode.Rewind);
+        
     }
 }

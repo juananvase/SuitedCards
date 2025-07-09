@@ -4,7 +4,7 @@ public abstract class WeaponBase : MonoBehaviour
 {
     [field: SerializeField] public WeaponData WeaponData { get; private set; }
 
-    protected virtual void HandleAttack(Vector3 aimPosition, GameObject instigator, int team, float damage, bool isParryable) { }
+    protected virtual void HandleAttack(Vector3 aimPosition, GameObject instigator, int team, float weaponDamage, bool isParryable) { }
 
     public void Attack(Vector3 aimPosition, GameObject instigator, int team)
     {

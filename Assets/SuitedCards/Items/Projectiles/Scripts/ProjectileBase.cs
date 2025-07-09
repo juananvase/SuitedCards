@@ -7,7 +7,7 @@ public abstract class ProjectileBase : MonoBehaviour, IParryable
 {
     [SerializeField] private Rigidbody _rigidbody;
     
-    public float ParryEfficiency { get; set; }
+    public float VictimParryEfficiency { get; set; }
     
     private float _speed;
     private float _range;
@@ -87,7 +87,7 @@ public abstract class ProjectileBase : MonoBehaviour, IParryable
         
         if (victim.TryGetComponent(out IDamageable damageable))
         {
-            float parriedDamage = baseDamage - (baseDamage * ParryEfficiency);
+            float parriedDamage = baseDamage - (baseDamage * VictimParryEfficiency);
             DamageInfo damageInfo = new DamageInfo(parriedDamage, victim, gameObject, instigator, _damageType);
             damageable.Damage(damageInfo);
         }

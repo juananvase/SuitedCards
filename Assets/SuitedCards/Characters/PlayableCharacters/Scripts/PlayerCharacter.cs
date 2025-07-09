@@ -58,7 +58,7 @@ public class PlayerCharacter : CharacterBase
     
     protected override async Task RangeProjectileAttackRoutine(WeaponRangeProjectile weaponRangeProjectile)
     {
-        if (await GameManager.instance.QTEManager.QTESequence(4, PlayerCharacterData.QTEReactionWindow))
+        if (await GameManager.instance.QTEManager.QTESequence(4, PlayerCharacterData.QTEReactionWindow, gameObject))
         {
             weaponRangeProjectile.ChargedAttack(_target.transform.position, gameObject, Team);
             return;
@@ -75,7 +75,7 @@ public class PlayerCharacter : CharacterBase
         await Tween.Position(transform, startValue: movementPositions[0], endValue: movementPositions[1], duration: CharacterData.DashDuration, ease: Ease.InCubic);
         await Tween.Delay(CharacterData.AttackDuration);
         
-        if (await GameManager.instance.QTEManager.QTESequence(4, PlayerCharacterData.QTEReactionWindow))
+        if (await GameManager.instance.QTEManager.QTESequence(4, PlayerCharacterData.QTEReactionWindow, gameObject))
         {
             weaponMelee.ChargedAttack(_target.transform.position, gameObject, Team);
             await Awaitable.NextFrameAsync();
@@ -90,12 +90,12 @@ public class PlayerCharacter : CharacterBase
 
     private void ReadQTEInputs(Vector2 value)
     {
-        GameManager.instance.QTEManager.ReadQTEInputs(value);
+        GameManager.instance.QTEManager.ReadQTEInputs(value, gameObject);
     }
     
-    protected override async Task CounterAttackTask()
+    protected override async void CounterAttackTask()
     {
-        if (!await GameManager.instance.QTEManager.QTESequence(3, PlayerCharacterData.QTEReactionWindow)) return;
+        if (!await GameManager.instance.QTEManager.QTESequence(3, PlayerCharacterData.QTEReactionWindow, gameObject)) return;
         
         WeaponMelee weaponParrier = null;
         for (int i = 0; i < Weapons.Length; i++)
