@@ -1,6 +1,6 @@
 using UnityEngine;
 public interface IParryable
 {
-    float ParryEfficiency { get; set; }
+    float VictimParryEfficiency { get; set; }
     void ParriedAttack(GameObject victim, GameObject instigator, float baseDamage);
 }

@@ -4,15 +4,15 @@ using UnityEngine;
 public class WeaponMelee : WeaponBase, IParryable
 {
     public WeaponMeleeData WeaponMeleeData => WeaponData as WeaponMeleeData;
-    public float ParryEfficiency { get; set; }
+    public float VictimParryEfficiency { get; set; }
 
     private float _lastParryTime;
     private Collider[] _hits =  new Collider[5];
 
     //TODO fix animations and advance melee combat
-    protected override void HandleAttack(Vector3 aimPosition, GameObject instigator, int team, float damage, bool isParryable)
+    protected override void HandleAttack(Vector3 aimPosition, GameObject instigator, int team, float weaponDamage, bool isParryable)
     {
-        base.HandleAttack(aimPosition, instigator, team, damage, isParryable);
+        base.HandleAttack(aimPosition, instigator, team, weaponDamage, isParryable);
         
         Vector3 origin = instigator.transform.position;
         Vector3 direction = (aimPosition - origin).normalized;
@@ -33,14 +33,14 @@ public class WeaponMelee : WeaponBase, IParryable
             if (angleToHit > WeaponMeleeData.AttackAngle) continue;
             
             if (isParryable && hit.TryGetComponent(out IParryUser parryUser) && parryUser.IsParrying)
-            { 
+            {
                 ParriedAttack(hit.gameObject, instigator, WeaponMeleeData.Damage);
                 return;
             }
 
             if (hit.TryGetComponent(out IDamageable damageable))
             {
-                DamageInfo damageInfo = new DamageInfo(damage, hit.gameObject, gameObject, instigator, WeaponMeleeData.DamageType);
+                DamageInfo damageInfo = new DamageInfo(weaponDamage, hit.gameObject, gameObject, instigator, WeaponMeleeData.DamageType);
                 damageable.Damage(damageInfo);
             }
         }
@@ -55,7 +55,7 @@ public class WeaponMelee : WeaponBase, IParryable
 
     public void ParriedAttack(GameObject victim, GameObject instigator, float baseDamage)
     {
-        float parriedDamage = baseDamage - (baseDamage * ParryEfficiency);
+        float parriedDamage = baseDamage - (baseDamage * VictimParryEfficiency);
         WeaponMeleeData.OnParrySuccessful?.Invoke(victim);
         if (victim.TryGetComponent(out IDamageable damageable))
         {
@@ -96,7 +96,7 @@ public class WeaponMelee : WeaponBase, IParryable
             float angleToHit = Vector3.Angle(direction, targetDirection);
             if (angleToHit > WeaponMeleeData.AttackAngle) continue;
             
-            if (hit.TryGetComponent(out IParryable parriedObject)) parriedObject.ParryEfficiency = WeaponMeleeData.ParryEfficiency;
+            if (hit.TryGetComponent(out IParryable parriedObject)) parriedObject.VictimParryEfficiency = WeaponMeleeData.ParryEfficiency;
             
         }
         
