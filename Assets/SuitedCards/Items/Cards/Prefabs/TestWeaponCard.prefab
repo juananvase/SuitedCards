@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 347631154032586160}
   - component: {fileID: 8483323303870192728}
   m_Layer: 5
-  m_Name: TestCard
+  m_Name: TestWeaponCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110,8 +110,8 @@ RectTransform:
   - {fileID: 2010399548631133970}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 175, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -177,6 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc73be73d637c6044bb84ad613cded8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 8343708335489547554, guid: 219b53aebff99c248b70436ab23eaa42, type: 3}
   _canvas: {fileID: 0}
   _rectTransform: {fileID: 7518148136570078144}
   <ItemCardData>k__BackingField: {fileID: 11400000, guid: 182e83eedf68641408eb4e3a0b187a56, type: 2}

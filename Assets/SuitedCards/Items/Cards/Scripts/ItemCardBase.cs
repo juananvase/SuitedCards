@@ -5,6 +5,9 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(RectTransform))]
 public class ItemCardBase : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler
 {
+    [SerializeField] private ItemBase _item;
+    private AnchorType _itemAnchor => _item.ItemData.AnchorType;
+    
     //TODO get hud canvas from game manager
     [SerializeField] private Canvas _canvas;
     [SerializeField] private RectTransform _rectTransform;
@@ -49,17 +52,25 @@ public class ItemCardBase : MonoBehaviour, IPointerDownHandler, IBeginDragHandle
 
     private void AssignItem()
     {
-        //TODO keep this function empty -> WeaponCard, ArmorCard, EffectCard
         if (SelectTarget().TryGetComponent(out PlayerCharacter character))
         {
-            if (character.WeaponAnchors.Length == 0)
+            ItemAnchor[] itemAnchors = character.ItemAnchors;
+            
+            if (itemAnchors.Length == 0)
             {
-                Debug.LogError("No weapon anchors found");
+                Debug.LogError("No anchors found");
                 return;
             }
 
-            Instantiate(ItemCardData.Item, character.WeaponAnchors[0].position, Quaternion.identity, character.WeaponAnchors[0]);
-            ItemCardData.OnFindWeapons?.Invoke(character.gameObject);
+            for (int i = 0; i < itemAnchors.Length; i++)
+            {
+                if (itemAnchors[i].AnchorType == _itemAnchor && !itemAnchors[i].IsBeingUsed)
+                {
+                    Instantiate(_item.gameObject, itemAnchors[i].transform.position, Quaternion.identity, itemAnchors[i].transform);
+                    ItemCardData.OnFindItems?.Invoke(character.gameObject);
+                    return;
+                }
+            }
         }
     }
 

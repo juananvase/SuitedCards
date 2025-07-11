@@ -9,11 +9,9 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
 {
     //Data
     [field: SerializeField] public CharacterData CharacterData { get; private set; }
-    [field: SerializeField] public WeaponBase[] Weapons { get; private set; }
-    [field: SerializeField] public Transform[] WeaponAnchors { get; private set; }
-    
+    [field: SerializeField] public ItemAnchor[] ItemAnchors { get; private set; }
     [field: SerializeField] public EquipmentBase[] Equipments { get; private set; }
-    [field: SerializeField] public Transform[] EquipmentsAnchors { get; private set; }
+    [field: SerializeField] public WeaponBase[] Weapons { get; private set; }
     
     //Target System
     [SerializeField] protected GameObject _target;
@@ -33,24 +31,28 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
 
     protected virtual void OnEnable()
     {
-        CharacterData.OnFindWeapons.AddListener(TryFindWeapons);
+        FindItemAnchors();
+        CharacterData.OnFindItems.AddListener(FindItems);
         CharacterData.OnParrySuccessful.AddListener(TryCounterAttack);
     }
     
     protected virtual void OnDisable()
     {
-        CharacterData.OnFindWeapons.RemoveListener(TryFindWeapons);
+        CharacterData.OnFindItems.RemoveListener(FindItems);
         CharacterData.OnParrySuccessful.RemoveListener(TryCounterAttack);
     }
-
-    private void Start()
+    
+    [ContextMenu(nameof(FindItemAnchors))]
+    private void FindItemAnchors()
     {
-        UseEquipment();
+        ItemAnchors = GetComponentsInChildren<ItemAnchor>();
     }
-
-    private void TryFindWeapons(GameObject character)
+    
+    private void FindItems(GameObject character)
     {
-        if(character == gameObject) FindWeapons();
+        if(character != gameObject) return;
+        FindWeapons();
+        FindEquipments();
     }
 
     [ContextMenu(nameof(FindWeapons))]
@@ -149,11 +151,6 @@ public abstract class CharacterBase : MonoBehaviour, ITargetable, IParryUser
         await Tween.Position(transform, startValue: movementPositions[1], endValue: movementPositions[0], duration: CharacterData.DashDuration, ease: Ease.InCubic);
     }
     
-    
-    private void TryFindEquipments(GameObject character)
-    {
-        if(character == gameObject) FindEquipments();
-    }
     
     [ContextMenu(nameof(FindEquipments))]
     private void FindEquipments()

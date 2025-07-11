@@ -12,19 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9922ebb9570b83645a8c6620d2a7c412, type: 3}
   m_Name: TestMeleeWeaponData
   m_EditorClassIdentifier: 
+  <AnchorType>k__BackingField: 3
   <Damage>k__BackingField: 10
   <CriticDamagePercentage>k__BackingField: 5
   <Range>k__BackingField: 2
   <AttackDuration>k__BackingField: 1
   <DamageType>k__BackingField: 0
+  <OnParrySuccessful>k__BackingField: {fileID: 11400000, guid: e7384e4d045554440bf6217aff91dd0a, type: 2}
   <AttackAngle>k__BackingField: 120
   <AttackHitMask>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
-  <OnParrySuccessful>k__BackingField: {fileID: 11400000, guid: e7384e4d045554440bf6217aff91dd0a, type: 2}
   <ParryRate>k__BackingField: 3
   <ParryOpportunityWindow>k__BackingField: 0.2
   <ParryEfficiency>k__BackingField: 1
   <ParryHitMask>k__BackingField:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 640

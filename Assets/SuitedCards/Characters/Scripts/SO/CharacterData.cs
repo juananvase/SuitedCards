@@ -4,7 +4,7 @@ using UnityEngine;
 public class CharacterData : BaseData
 {
     //Attack
-    [field: SerializeField] public GameObjectEventAsset OnFindWeapons {get; private set; }
+    [field: SerializeField] public GameObjectEventAsset OnFindItems {get; private set; }
     [field: SerializeField] public float AttackOffset { get; private set; } = 1f;
     [field: SerializeField] public float AttackDuration { get; private set; } = 0.5f;
     

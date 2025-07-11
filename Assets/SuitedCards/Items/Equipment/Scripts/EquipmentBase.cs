@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class EquipmentBase : MonoBehaviour
+public class EquipmentBase : ItemBase
 {
-    [SerializeField] private float _shield = 10;
+    public EquipmentData EquipmentData => ItemData as EquipmentData;
 
     public void Equip(GameObject instigator)
     {
@@ -13,6 +13,6 @@ public class EquipmentBase : MonoBehaviour
     {
         if (!instigator.TryGetComponent(out IShieldable shielded)) return;
         
-        shielded.Shield += _shield;
+        shielded.Shield += EquipmentData.Shield;
     }
 }

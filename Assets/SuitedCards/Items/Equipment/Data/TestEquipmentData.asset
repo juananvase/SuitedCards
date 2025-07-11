@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f1ce39526339744cb38dbc7b2051cfd, type: 3}
-  m_Name: OnFindWeapons
+  m_Script: {fileID: 11500000, guid: 74a149cc8d6434641a6f5a4d39884fa1, type: 3}
+  m_Name: TestEquipmentData
   m_EditorClassIdentifier: 
-  OnInvoked:
-    m_PersistentCalls:
-      m_Calls: []
+  <AnchorType>k__BackingField: 1
+  <Shield>k__BackingField: 10

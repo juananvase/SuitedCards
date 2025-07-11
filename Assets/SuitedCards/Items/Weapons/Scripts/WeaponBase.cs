@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public abstract class WeaponBase : MonoBehaviour
+public abstract class WeaponBase : ItemBase
+
 {
-    [field: SerializeField] public WeaponData WeaponData { get; private set; }
+    public WeaponData WeaponData => ItemData as WeaponData;
 
     protected virtual void HandleAttack(Vector3 aimPosition, GameObject instigator, int team, float weaponDamage, bool isParryable) { }
 

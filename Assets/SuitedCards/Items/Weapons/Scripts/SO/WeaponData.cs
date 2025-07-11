@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "WeaponData", menuName = "Scriptable Objects/WeaponData/WeaponData")]
-public class WeaponData : ScriptableObject
+public class WeaponData : ItemData
 {
     [field: SerializeField] public float Damage { get; private set; } = 10f;
     [field: SerializeField] public float CriticDamagePercentage { get; private set; } = 0.1f;
