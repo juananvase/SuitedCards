@@ -1,44 +1,56 @@
 using System;
+using PrimeTween;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(RectTransform))]
-public class ItemCardBase : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler
+public class ItemCardBase : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private ItemBase _item;
     private AnchorType _itemAnchor => _item.ItemData.AnchorType;
     
     //TODO get hud canvas from game manager
-    [SerializeField] private Canvas _canvas;
+    [SerializeField] private Canvas _hudCanvas;
+    
     [SerializeField] private RectTransform _rectTransform;
+    [SerializeField] private CanvasGroup _canvasGroup;
 
-    //private GameObject _target = null;
+    private int _siblingIndex;
 
     [field: SerializeField] public ItemCardData ItemCardData { get; private set; }
 
     private void OnValidate()
     {
         _rectTransform = GetComponent<RectTransform>();
+        _canvasGroup = GetComponent<CanvasGroup>();
     }
-
-    public void OnPointerDown(PointerEventData eventData)
+    
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        
+        _siblingIndex = transform.GetSiblingIndex();
+        transform.SetAsLastSibling();
+        Tween.Scale(transform, startValue: Vector3.one , endValue: Vector3.one * 1.5f, duration: 0.5f);
+    }
+    
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        transform.SetSiblingIndex(_siblingIndex);
+        Tween.Scale(transform, startValue: transform.localScale, endValue: Vector3.one, duration: 0.5f);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        
+        _canvasGroup.alpha = 0.6f;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        
+        _canvasGroup.alpha = 1f;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        _rectTransform.anchoredPosition += eventData.delta / _canvas.scaleFactor;
+        _rectTransform.anchoredPosition += eventData.delta / _hudCanvas.scaleFactor;
         
     }
 
@@ -84,4 +96,5 @@ public class ItemCardBase : MonoBehaviour, IPointerDownHandler, IBeginDragHandle
 
         return null;
     }
+    
 }

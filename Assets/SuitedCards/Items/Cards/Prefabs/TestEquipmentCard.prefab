@@ -103,8 +103,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _item: {fileID: 5855529662340129522, guid: cfc400ab492da0149abfb81a5e410765, type: 3}
+  _hudCanvas: {fileID: 0}
   _canvas: {fileID: 0}
   _rectTransform: {fileID: 535154323224947816}
+  _canvasGroup: {fileID: 7809218564322766966}
   <ItemCardData>k__BackingField: {fileID: 11400000, guid: 182e83eedf68641408eb4e3a0b187a56, type: 2}
 --- !u!1 &7525483404665955763
 GameObject:

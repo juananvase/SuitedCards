@@ -178,6 +178,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _item: {fileID: 8343708335489547554, guid: 219b53aebff99c248b70436ab23eaa42, type: 3}
+  _hudCanvas: {fileID: 0}
   _canvas: {fileID: 0}
   _rectTransform: {fileID: 7518148136570078144}
+  _canvasGroup: {fileID: 347631154032586160}
   <ItemCardData>k__BackingField: {fileID: 11400000, guid: 182e83eedf68641408eb4e3a0b187a56, type: 2}
