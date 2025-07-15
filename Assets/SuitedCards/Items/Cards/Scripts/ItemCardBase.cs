@@ -17,6 +17,9 @@ public class ItemCardBase : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
 
     private int _siblingIndex;
 
+    //ACTIONS
+    public Action OnCardDropped;
+
     [field: SerializeField] public ItemCardData ItemCardData { get; private set; }
 
     private void OnValidate()
@@ -56,21 +59,29 @@ public class ItemCardBase : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
 
     public void OnDrop(PointerEventData eventData)
     {
-        
         AssignItem();
         //TODO send card to the grave pile
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 
     private void AssignItem()
     {
-        if (SelectTarget().TryGetComponent(out PlayerCharacter character))
+        if (SelectTarget() != null)
         {
+            PlayerCharacter character = SelectTarget().GetComponent<PlayerCharacter>();
+            if (character == null )
+            {
+                Debug.LogError("No character found on target object");
+                OnCardDropped?.Invoke();
+                return;
+            }
+
             ItemAnchor[] itemAnchors = character.ItemAnchors;
             
             if (itemAnchors.Length == 0)
             {
                 Debug.LogError("No anchors found");
+                OnCardDropped?.Invoke();
                 return;
             }
 
@@ -80,9 +91,15 @@ public class ItemCardBase : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                 {
                     Instantiate(_item.gameObject, itemAnchors[i].transform.position, Quaternion.identity, itemAnchors[i].transform);
                     ItemCardData.OnFindItems?.Invoke(character.gameObject);
-                    return;
+                    gameObject.SetActive(false);
+                    break;
                 }
             }
+        }
+        else
+        {
+            OnCardDropped?.Invoke();
+            Debug.LogError("No target selected for item card drop");
         }
     }
 

@@ -5,6 +5,8 @@ using UnityEngine.Splines;
 [RequireComponent(typeof(RectTransform))]
 public class CardHolderSection : MonoBehaviour
 {
+    public static CardHolderSection Instance { get; private set; }
+
     [SerializeField] private RectTransform _rectTransform;
     [SerializeField] private ItemCardBase[] _cards;
     [SerializeField] private SplineContainer _splineContainer;
@@ -15,6 +17,18 @@ public class CardHolderSection : MonoBehaviour
     private void OnValidate()
     {
         _rectTransform = GetComponent<RectTransform>();
+    }
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 
     private void Start()
@@ -65,6 +79,10 @@ public class CardHolderSection : MonoBehaviour
         if (_cards.Length == 0) return false;
         
         _cards = GetComponentsInChildren<ItemCardBase>();
+        foreach (var card in _cards)
+        {
+            card.OnCardDropped += UpdateHandDisplay;
+        }
         return true;
     }
 }
