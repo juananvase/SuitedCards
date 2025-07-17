@@ -9,16 +9,12 @@ public class ItemCardBase : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     [SerializeField] private ItemBase _item;
     private AnchorType _itemAnchor => _item.ItemData.AnchorType;
     
-    //TODO get hud canvas from game manager
     [SerializeField] private Canvas _hudCanvas;
-    
     [SerializeField] private RectTransform _rectTransform;
     [SerializeField] private CanvasGroup _canvasGroup;
 
     private int _siblingIndex;
-
-    //ACTIONS
-    public Action OnCardDropped;
+    private Vector3 _startPosition;
 
     [field: SerializeField] public ItemCardData ItemCardData { get; private set; }
 
@@ -27,7 +23,12 @@ public class ItemCardBase : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
         _rectTransform = GetComponent<RectTransform>();
         _canvasGroup = GetComponent<CanvasGroup>();
     }
-    
+
+    private void OnEnable()
+    {
+        _hudCanvas = transform.root.GetComponent<Canvas>();
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         _siblingIndex = transform.GetSiblingIndex();
@@ -43,6 +44,7 @@ public class ItemCardBase : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        _startPosition =  transform.position;
         _canvasGroup.alpha = 0.6f;
     }
 
@@ -54,53 +56,49 @@ public class ItemCardBase : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     public void OnDrag(PointerEventData eventData)
     {
         _rectTransform.anchoredPosition += eventData.delta / _hudCanvas.scaleFactor;
-        
     }
 
     public void OnDrop(PointerEventData eventData)
     {
-        AssignItem();
-        //TODO send card to the grave pile
-        //Destroy(gameObject);
+        if(!AssignItem()) transform.position =  _startPosition;
+        
+        ItemCardData.OnCardUsed?.Invoke(this);
     }
 
-    private void AssignItem()
+    private bool AssignItem()
     {
-        if (SelectTarget() != null)
+        if (SelectTarget() == null)
         {
-            PlayerCharacter character = SelectTarget().GetComponent<PlayerCharacter>();
-            if (character == null )
-            {
-                Debug.LogError("No character found on target object");
-                OnCardDropped?.Invoke();
-                return;
-            }
+            Debug.LogWarning("No target selected for item card drop");
+            return false;
+        }
+        
+        PlayerCharacter character = SelectTarget().GetComponent<PlayerCharacter>();
+        if (character == null )
+        {
+            Debug.LogWarning("No character found on target object");
+            return false;
+        }
 
-            ItemAnchor[] itemAnchors = character.ItemAnchors;
-            
-            if (itemAnchors.Length == 0)
-            {
-                Debug.LogError("No anchors found");
-                OnCardDropped?.Invoke();
-                return;
-            }
+        ItemAnchor[] itemAnchors = character.ItemAnchors;
+        if (itemAnchors.Length == 0)
+        {
+            Debug.LogError("No anchors found");
+            return false;
+        }
 
-            for (int i = 0; i < itemAnchors.Length; i++)
+        for (int i = 0; i < itemAnchors.Length; i++)
+        {
+            if (itemAnchors[i].AnchorType == _itemAnchor && !itemAnchors[i].IsBeingUsed)
             {
-                if (itemAnchors[i].AnchorType == _itemAnchor && !itemAnchors[i].IsBeingUsed)
-                {
-                    Instantiate(_item.gameObject, itemAnchors[i].transform.position, Quaternion.identity, itemAnchors[i].transform);
-                    ItemCardData.OnFindItems?.Invoke(character.gameObject);
-                    gameObject.SetActive(false);
-                    break;
-                }
+                Instantiate(_item.gameObject, itemAnchors[i].transform.position, Quaternion.identity, itemAnchors[i].transform);
+                ItemCardData.OnFindItems?.Invoke(character.gameObject);
+                return true;
             }
         }
-        else
-        {
-            OnCardDropped?.Invoke();
-            Debug.LogError("No target selected for item card drop");
-        }
+        
+        return false;
+        
     }
 
     private GameObject SelectTarget()

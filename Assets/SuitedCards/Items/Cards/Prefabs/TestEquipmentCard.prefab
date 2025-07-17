@@ -27,8 +27,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5798881792766014718}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 4.989419e-10, y: 8.588944e-12, z: 0.00003468866, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -37,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 940.7169, y: 202.5}
   m_SizeDelta: {x: 175, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1843031295032278906
@@ -104,7 +104,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _item: {fileID: 5855529662340129522, guid: cfc400ab492da0149abfb81a5e410765, type: 3}
   _hudCanvas: {fileID: 0}
-  _canvas: {fileID: 0}
   _rectTransform: {fileID: 535154323224947816}
   _canvasGroup: {fileID: 7809218564322766966}
   <ItemCardData>k__BackingField: {fileID: 11400000, guid: 182e83eedf68641408eb4e3a0b187a56, type: 2}

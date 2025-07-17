@@ -86,6 +86,8 @@ GameObject:
   - component: {fileID: 1494553912419361061}
   - component: {fileID: 557452583592244323}
   - component: {fileID: 2423364215861145074}
+  - component: {fileID: 7576152141341294310}
+  - component: {fileID: 8447315242372252100}
   m_Layer: 5
   m_Name: DeckSection_Panel
   m_TagString: Untagged
@@ -152,6 +154,50 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &7576152141341294310
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5392317865747874979}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!114 &8447315242372252100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5392317865747874979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bc95717d7a9ec646922a28164471304, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <CurrentCards>k__BackingField: []
+  <Deck>k__BackingField:
+  - {fileID: 120292159754886756, guid: ad5e0b0e1dda22c428a23577c98794f3, type: 3}
+  - {fileID: 120292159754886756, guid: ad5e0b0e1dda22c428a23577c98794f3, type: 3}
+  - {fileID: 120292159754886756, guid: ad5e0b0e1dda22c428a23577c98794f3, type: 3}
+  - {fileID: 120292159754886756, guid: ad5e0b0e1dda22c428a23577c98794f3, type: 3}
+  - {fileID: 120292159754886756, guid: ad5e0b0e1dda22c428a23577c98794f3, type: 3}
+  - {fileID: 8483323303870192728, guid: 981aa0f6333142f409426f414963ff3d, type: 3}
+  - {fileID: 8483323303870192728, guid: 981aa0f6333142f409426f414963ff3d, type: 3}
+  - {fileID: 8483323303870192728, guid: 981aa0f6333142f409426f414963ff3d, type: 3}
+  - {fileID: 8483323303870192728, guid: 981aa0f6333142f409426f414963ff3d, type: 3}
+  - {fileID: 8483323303870192728, guid: 981aa0f6333142f409426f414963ff3d, type: 3}
+  - {fileID: 8483323303870192728, guid: 981aa0f6333142f409426f414963ff3d, type: 3}
+  - {fileID: 8483323303870192728, guid: 981aa0f6333142f409426f414963ff3d, type: 3}
+  - {fileID: 8483323303870192728, guid: 981aa0f6333142f409426f414963ff3d, type: 3}
+  - {fileID: 8483323303870192728, guid: 981aa0f6333142f409426f414963ff3d, type: 3}
+  - {fileID: 8483323303870192728, guid: 981aa0f6333142f409426f414963ff3d, type: 3}
+  <CardsDealt>k__BackingField: []
+  <OnDealCards>k__BackingField: {fileID: 11400000, guid: 15692f0cbc4aaba4ab8361c89435efad, type: 2}
+  <OnCardsNeeded>k__BackingField: {fileID: 11400000, guid: fb663068b80bd4f48acfacd163bdf87d, type: 2}
 --- !u!1 &5463628311950758069
 GameObject:
   m_ObjectHideFlags: 0

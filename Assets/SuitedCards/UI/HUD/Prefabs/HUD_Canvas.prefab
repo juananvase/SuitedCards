@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4576185056258323947}
   - component: {fileID: 3295191558059786306}
   m_Layer: 5
-  m_Name: Spline
+  m_Name: HandSpline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -134,6 +134,18 @@ MonoBehaviour:
       m_Data: []
     m_ObjectData:
       m_Data: []
+  - m_EditModeType: 0
+    m_Knots: []
+    m_MetaData: []
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
   m_Knots:
     m_KnotsLink: []
 --- !u!1 &775657447552041245
@@ -149,7 +161,7 @@ GameObject:
   - component: {fileID: 4826708977246703829}
   - component: {fileID: 5413659522773634605}
   m_Layer: 5
-  m_Name: CardSection_Panel
+  m_Name: HandSection_Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -225,8 +237,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 523eef058cd92a049861a0f141a164a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rectTransform: {fileID: 1302634037174523744}
-  _cards: []
+  <CurrentCards>k__BackingField: []
+  <CardCapacity>k__BackingField: 10
+  <OnDealCards>k__BackingField: {fileID: 11400000, guid: 15692f0cbc4aaba4ab8361c89435efad, type: 2}
+  <OnCardUsed>k__BackingField: {fileID: 11400000, guid: 917d801c7141bd04e8c2b43a054c0df9, type: 2}
+  <OnCardsDiscarded>k__BackingField: {fileID: 11400000, guid: d8c61c25f8edc4b46a644e53489a657c, type: 2}
   _splineContainer: {fileID: 3295191558059786306}
 --- !u!1 &1089958042302103672
 GameObject:
@@ -678,10 +693,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6259330371856937380, guid: 0bc4a69a6c884b141b6d022be90e1b20, type: 3}
-      propertyPath: _health
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7503455402306488892, guid: 0bc4a69a6c884b141b6d022be90e1b20, type: 3}
       propertyPath: m_Color.b
       value: 0
@@ -999,10 +1010,6 @@ PrefabInstance:
     - target: {fileID: 549146767416478301, guid: 0bc4a69a6c884b141b6d022be90e1b20, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6259330371856937380, guid: 0bc4a69a6c884b141b6d022be90e1b20, type: 3}
-      propertyPath: _health
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8119447900860127142, guid: 0bc4a69a6c884b141b6d022be90e1b20, type: 3}
       propertyPath: m_Name

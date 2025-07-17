@@ -6,5 +6,6 @@ public class ItemCardData : ScriptableObject
 {
     [field: SerializeField] public LayerMask  TargetMask {get; private set; }
     [field: SerializeField] public GameObjectEventAsset OnFindItems {get; private set; }
+    [field: SerializeField] public ItemCardBaseEventAsset OnCardUsed {get; private set; }
     
 }

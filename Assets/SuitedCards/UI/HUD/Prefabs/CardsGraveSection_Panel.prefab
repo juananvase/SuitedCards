@@ -86,6 +86,8 @@ GameObject:
   - component: {fileID: 8845485453775340743}
   - component: {fileID: 6191971262135438793}
   - component: {fileID: 208240683773718891}
+  - component: {fileID: 6157347134176128898}
+  - component: {fileID: 5527092123158371622}
   m_Layer: 5
   m_Name: CardsGraveSection_Panel
   m_TagString: Untagged
@@ -151,3 +153,30 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &6157347134176128898
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8088744630978199786}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!114 &5527092123158371622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8088744630978199786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1936f4521bdee6f4297919f35e99ae22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <CurrentCards>k__BackingField: []
+  <OnCardUsed>k__BackingField: {fileID: 11400000, guid: 917d801c7141bd04e8c2b43a054c0df9, type: 2}
+  <OnCardsDiscarded>k__BackingField: {fileID: 11400000, guid: d8c61c25f8edc4b46a644e53489a657c, type: 2}

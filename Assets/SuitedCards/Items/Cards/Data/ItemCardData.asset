@@ -15,5 +15,5 @@ MonoBehaviour:
   <TargetMask>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
-  <Item>k__BackingField: {fileID: 8343708335489547554, guid: 219b53aebff99c248b70436ab23eaa42, type: 3}
   <OnFindItems>k__BackingField: {fileID: 11400000, guid: 3327eedf6d58e774f8f653c15aa11c92, type: 2}
+  <OnCardUsed>k__BackingField: {fileID: 11400000, guid: 917d801c7141bd04e8c2b43a054c0df9, type: 2}
