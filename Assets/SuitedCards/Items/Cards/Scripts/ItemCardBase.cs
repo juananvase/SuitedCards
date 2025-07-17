@@ -60,8 +60,12 @@ public class ItemCardBase : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
 
     public void OnDrop(PointerEventData eventData)
     {
-        if(!AssignItem()) transform.position =  _startPosition;
-        
+        if (!AssignItem())
+        {
+            transform.position =  _startPosition;
+            return;
+        }
+
         ItemCardData.OnCardUsed?.Invoke(this);
     }
 
